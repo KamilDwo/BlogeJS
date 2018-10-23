@@ -19,24 +19,30 @@ const GlobalStyle = createGlobalStyle `
   }
 `;
 
-const Home = () => (
+const Bloggers = () => (
   <div>
-    <h2>Home</h2>
+    <h2>Bloggers</h2>
   </div>
 );
 
-const About = () => (
+const Beloved = () => (
   <div>
-    <h2>About</h2>
+    <h2>Beloved</h2>
   </div>
 );
 
-
+const User = () => (
+  <div>
+    <h2>User</h2>
+  </div>
+);
 
 const StyledLogo = styled.div`
-  height: 32px;
-  background: rgba(255,255,255,.2);
-  margin: 16px;
+  background: transparent;
+  margin: 16px 0;
+  color: #fff;
+  user-select: none;
+  text-align: center;
 `;
 
 const StyledSider = styled(Sider)`
@@ -78,7 +84,7 @@ class App extends Component {
       <GlobalStyle/>
       <BackTop/>
       <StyledSider breakpoint="lg" collapsedWidth="0">
-        <StyledLogo/>
+        <StyledLogo>BlogeJS</StyledLogo>
         <Menu theme="dark" mode="inline" defaultSelectedKeys={['1']}>
           <StyledMenuitem key="1">
             <Link to="/">
@@ -107,11 +113,12 @@ class App extends Component {
         </Menu>
       </StyledSider>
       <StyledLayout>
-        <Route exact path="/" component={Home} />
-        <Route path="/about" component={About} />
-        <Content style={{ margin: '24px 16px 0' }}>
+        <Content style={{ margin: '16px 16px 0' }}>
           <div style={{ padding: 24, background: '#fff', minHeight: 1360 }}>
-            <Timeline/>
+            <Route exact path="/" component={Timeline} />
+            <Route path="/bloggers" component={Bloggers} />
+            <Route path="/beloved" component={Beloved} />
+            <Route path="/user" component={User} />
           </div>
         </Content>
         <Footer style={{ textAlign: 'center' }}>

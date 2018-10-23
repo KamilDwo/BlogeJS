@@ -7,10 +7,9 @@ const StyledText = styled.span`
   text-align: center;
 `;
 
-
 class Foot extends Component {
   render() {
-    return (<StyledText>&copy; 2018 Bloge</StyledText>);
+    return (<StyledText>&copy; 2018 BlogeJS</StyledText>);
   }
 }
 
