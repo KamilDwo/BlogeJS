@@ -6,3 +6,5 @@
 * Redux
 * Ant Design
 * GraphQL
+* React Router
+* Styled Components
