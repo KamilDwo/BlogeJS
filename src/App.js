@@ -81,28 +81,28 @@ class App extends Component {
         <StyledLogo/>
         <Menu theme="dark" mode="inline" defaultSelectedKeys={['1']}>
           <StyledMenuitem key="1">
-            <Icon type="home" theme="outlined" />
-            <span className="nav-text">
-              <Link to="/">
-                Homepage
-              </Link>
-            </span>
+            <Link to="/">
+              <Icon type="home" theme="outlined" />
+              <span className="nav-text">Latest</span>
+            </Link>
           </StyledMenuitem>
           <StyledMenuitem key="2">
-            <Icon type="video-camera" />
-            <span className="nav-text">
-              <Link to="/about">
-                About
-              </Link>
-            </span>
+            <Link to="/bloggers">
+              <Icon type="team" theme="outlined" />
+              <span className="nav-text">Bloggers</span>
+            </Link>
           </StyledMenuitem>
           <StyledMenuitem key="3">
-            <Icon type="upload" />
-            <span className="nav-text">Most popular</span>
+            <Link to="/beloved">
+              <Icon type="heart" theme="outlined" />
+              <span className="nav-text">Beloved</span>
+            </Link>
           </StyledMenuitem>
           <StyledMenuitem key="4">
-            <Icon type="user" />
-            <span className="nav-text">User</span>
+            <Link to="/user">
+              <Icon type="user" />
+              <span className="nav-text">Userpanel</span>
+            </Link>
           </StyledMenuitem>
         </Menu>
       </StyledSider>
