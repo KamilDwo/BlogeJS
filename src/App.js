@@ -1,14 +1,14 @@
-import React, {Component} from 'react';
+import React, {Component} from 'react'
 import {createGlobalStyle} from 'styled-components'
-import Timeline from './components/Timeline';
-import Foot from './components/Foot';
-import styled from 'styled-components';
-import { BrowserRouter as Router, Route, Link } from "react-router-dom";
+import Timeline from './components/Timeline'
+import Foot from './components/Foot'
+import styled from 'styled-components'
+import { BrowserRouter as Router, Route, Link } from 'react-router-dom'
 
-import { Layout, Menu, Icon, BackTop } from 'antd';
-import 'antd/dist/antd.css';
+import { Layout, Menu, Icon, BackTop } from 'antd'
+import 'antd/dist/antd.css'
 
-const { Footer, Sider, Content } = Layout;
+const { Footer, Sider, Content } = Layout
 
 const GlobalStyle = createGlobalStyle `
   body {
@@ -17,25 +17,25 @@ const GlobalStyle = createGlobalStyle `
     background: #FEFFFF;
     font-family: 'Open Sans', sans-serif;
   }
-`;
+`
 
 const Bloggers = () => (
   <div>
     <h2>Bloggers</h2>
   </div>
-);
+)
 
 const Beloved = () => (
   <div>
     <h2>Beloved</h2>
   </div>
-);
+)
 
 const User = () => (
   <div>
     <h2>User</h2>
   </div>
-);
+)
 
 const StyledLogo = styled.div`
   background: transparent;
@@ -43,7 +43,7 @@ const StyledLogo = styled.div`
   color: #fff;
   user-select: none;
   text-align: center;
-`;
+`
 
 const StyledSider = styled(Sider)`
   && {
@@ -52,11 +52,11 @@ const StyledSider = styled(Sider)`
     position: fixed;
     left: 0;
   }
-`;
+`
 
 const StyledLayout = styled(Layout)`
   margin-left: 200px;
-`;
+`
 
 const StyledMenuitem = styled(Menu.Item)`
   && {
@@ -76,7 +76,7 @@ const StyledMenuitem = styled(Menu.Item)`
       color: #fff;
     }
   }
-`;
+`
 
 class App extends Component {
   render() {
@@ -125,8 +125,8 @@ class App extends Component {
           <Foot/>
         </Footer>
       </StyledLayout>
-    </Layout></Router>);
+    </Layout></Router>)
   }
 }
 
-export default App;
+export default App
