@@ -8,3 +8,4 @@
 * GraphQL
 * React Router
 * Styled Components
+* Axios
