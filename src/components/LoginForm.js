@@ -3,7 +3,6 @@ import { Form, Icon, Input, notification } from 'antd'
 import { Modal } from 'antd'
 import { StyledSubmit } from '../styles/Styles.style'
 import { connect } from 'react-redux'
-//import { Redirect } from 'react-router-dom'
 
 const FormItem = Form.Item
 
@@ -46,6 +45,7 @@ class NormalLoginForm extends Component {
           this.setState({ visible: false, redirect: true })
           openNotificationWithIcon('success');
           this.props.onLogin({ loggedUser: true, userName: userName, redirect: true })
+          localStorage.setItem('user', JSON.stringify({ loggedUser: true, userName: userName }))
         } else {
           openNotificationWithIcon('error');
         }

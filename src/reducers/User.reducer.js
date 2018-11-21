@@ -1,6 +1,6 @@
 const initialState = {
-  loggedUser: null,
-  userName: '',
+  loggedUser: (localStorage.getItem('user') ? true : false),
+  userName: (localStorage.getItem('user') ? JSON.parse(localStorage.getItem('user')).userName : ''),
   redirect: false
 }
 

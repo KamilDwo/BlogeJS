@@ -18,7 +18,6 @@ const { Footer, Content } = Layout
 class App extends Component {
   constructor() {
     super()
-
     this.state = {
       collapsed: false,
       menu: {

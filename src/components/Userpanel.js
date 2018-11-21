@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import WrappedNormalLoginForm from './LoginForm'
-import { Modal, Layout } from 'antd'
+import { Modal, Layout, Button } from 'antd'
 import { connect } from 'react-redux'
 
 const { Content } = Layout
@@ -8,7 +8,7 @@ const { Content } = Layout
 
 const LoggedPanel = () => {
   return (<Content style={{ background: '#fff', padding: 24, margin: 0, minHeight: 280 }}>
-    Hello <button onClick={ Logout }>Logout</button>
+    Hello <Button onClick={ Logout }>Logout</Button>
   </Content>)
 }
 
