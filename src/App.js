@@ -15,6 +15,27 @@ import { connect } from 'react-redux'
 
 const { Footer, Content } = Layout
 
+function RandomTitle(characters, type) {
+  let text = ''
+  let possible = ''
+
+  if(type === 1){
+    possible = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789 '
+  } else if(type === 3){
+    possible = 'abcdefghijklmnopqrstuvwxyz'
+  } else {
+    possible = '123456789'
+  }
+  for (let i = 0; i < characters; i++) {
+    text += possible.charAt(Math.floor(Math.random() * possible.length))
+  }
+  return text
+}
+
+function RandomInt(min, max) {
+  return Math.floor(Math.random() * (max - min + 1) + min)
+}
+
 class App extends Component {
   constructor() {
     super()
@@ -39,6 +60,17 @@ class App extends Component {
         currentPage: currentPage
       }
     })
+  }
+
+  componentWillMount= () => {
+    if(!localStorage.getItem('posts')){
+      let posts = [], number
+      for (let i = 0; i < 139; i++) {
+        number = i + 1
+        posts.push({ title: RandomTitle(15, 1), intro: RandomTitle(15, 1), user: parseInt(RandomInt(1, 493)), url: number + '-' + RandomTitle(10, 3) })
+      }
+      localStorage.setItem('posts', JSON.stringify({ posts }))
+    }
   }
 
   handleShowLoginForm = () => {

@@ -1,8 +1,6 @@
-import React, {Component} from 'react'
-import { Card, Row } from 'antd'
-import axios from 'axios'
+import React, { Component } from 'react'
+import { Card, Row, Icon } from 'antd'
 import { Link } from 'react-router-dom'
-import RandomString from '../helpers/random'
 import GetAvatar from '../helpers/avatar'
 import { StyledPagination, StyledCol } from '../styles/Styles.style'
 import { connect } from 'react-redux'
@@ -13,9 +11,12 @@ class Timeline extends Component {
   constructor() {
     super()
     this.state = {
-      loading: true,
+      isLoading: true,
       rows: null,
-      page: 1
+      page: 1,
+      errors: null,
+      allRows: 0,
+      pages: 0
     }
   }
 
@@ -30,86 +31,81 @@ class Timeline extends Component {
   }
 
   getPosts = (page, component) => {
-    let url = `http://localhost:3003/posts_page${page}.json`
+    if(localStorage.getItem('posts')){
+      let posts = JSON.parse(localStorage.getItem('posts')).posts
+      let postsPagination
+      let numberOfPages = Math.floor((posts.length + 21 - 0) / 21)
+      let start = (page * 21) - (21 - 0)
+      let end = Math.min(start + 21 - 0, posts.length)
 
-    axios.get(url).then(function (response) {
+      postsPagination = posts.slice(start, end)
       component.setState({
         page: page,
-        rows: response.data.results,
-        loading: false
+        rows: postsPagination,
+        allRows: posts.length,
+        isLoading: false,
+        pages: numberOfPages
       })
-    }).catch(function (error) {
-    }).then(function () {
-
-    })
+    }
   }
 
   changePage = (page) => {
     this.getPosts(page, this)
   }
 
-  render() {
-    const { loading } = this.state
-    let GridRows = []
-    let gridElement
-    let next, next2, letterIndex
-    let Paginate, postUrl
-
-    if(this.state.rows){
-      Paginate =
-        <StyledPagination
-          total={this.state.rows.length}
-          showTotal={(total, range) => `${range[0]}-${range[1]} of ${total} items`}
-          pageSize={21}
-          defaultCurrent={1}
-          onChange={this.changePage}
-        />
-
-      for (let i = 0; i < this.state.rows.length; i = i + 3) {
-        next = i + 1
-        next2 = i + 2
-        letterIndex = `r${i}`
-        postUrl = `/post/${this.state.rows[i].name}`
-
-        gridElement = <Row gutter={16} key={letterIndex}>
-          <Link to={postUrl}>
-            <StyledCol span={8} key={i}>
-              <Card loading={loading}>
-                <Meta
-                  avatar={<GetAvatar name={RandomString()} username={this.state.rows[i].username}/>}
-                  title={this.state.rows[i].name}
-                  description={this.state.rows[i].intro}
-                />
-              </Card>
-            </StyledCol>
-          </Link>
-          <Link to={postUrl}>
-            <StyledCol span={8} key={next}>
-              <Card loading={loading}>
-                <Meta
-                  avatar={<GetAvatar name={RandomString()} username={this.state.rows[i].username}/>}
-                  title={this.state.rows[i].name}
-                  description={this.state.rows[i].intro}
-                />
-              </Card>
-            </StyledCol>
-          </Link>
-          <Link to={postUrl}>
-            <StyledCol span={8} key={next2}>
-              <Card loading={loading}>
-                <Meta
-                  avatar={<GetAvatar name={RandomString()} username={this.state.rows[i].username}/>}
-                  title={this.state.rows[i].name}
-                  description={this.state.rows[i].intro}
-                />
-              </Card>
-            </StyledCol>
-          </Link>
-        </Row>
-        GridRows.push(gridElement)
-      }
+  itemRender = (current, type, originalElement) => {
+    if (type === 'prev') {
+      return <Icon type="left-circle" theme="filled" alt="Previous page" style={{ fontSize: '20px', position: 'relative', top: '2px' }}/>
+    } if (type === 'next') {
+      return <Icon type="right-circle" theme="filled" alt="Next page" style={{ fontSize: '20px', position: 'relative', top: '2px' }}/>
     }
-    return (<React.Fragment>{GridRows}{Paginate}</React.Fragment>)
+    return originalElement
+  }
+
+  createTable = (rows) => {
+    let rowContents = [], contents, postUrl, stringKey, stringKey2
+
+    contents = rows.reduce((acc, p, i) => {
+      postUrl = `/post/${ rows[i].url }`
+      stringKey = `r${ i }`
+      stringKey2 = `r2${ i }`
+
+      rowContents.push(<Link to={ postUrl } key={ i }>
+        <StyledCol span={ 8 } >
+          <Card>
+            <Meta
+              avatar={ <GetAvatar id={ rows[i].user }/> }
+              title={ rows[i].title }
+              description={ rows[i].intro }
+            />
+          </Card>
+        </StyledCol>
+      </Link>)
+      if (i % 3 === 3) {
+        acc.push(<Row gutter={ 16 } key={ stringKey }>{rowContents}</Row>)
+        rowContents = []
+      }
+      return acc
+    },[])
+    contents.push(<Row gutter={ 16 } key={ stringKey2 }>{rowContents}</Row>)
+
+    return (
+			<React.Fragment>{contents}</React.Fragment>
+		)
+  }
+
+  render() {
+    const { isLoading, allRows } = this.state
+
+    return (<React.Fragment>
+      { !isLoading ? this.createTable(this.state.rows) : "" }
+      <StyledPagination
+        total={ allRows }
+        pageSize={ 21 }
+        current={ this.state.page }
+        itemRender={ this.itemRender }
+        onChange={ this.changePage }/>
+    </React.Fragment>)
   }
 }
 
