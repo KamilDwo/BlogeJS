@@ -62,7 +62,7 @@ class App extends Component {
     })
   }
 
-  componentWillMount= () => {
+  componentWillMount = () => {
     if(!localStorage.getItem('posts')){
       let posts = [], number
       for (let i = 0; i < 139; i++) {
@@ -71,6 +71,10 @@ class App extends Component {
       }
       localStorage.setItem('posts', JSON.stringify({ posts }))
     }
+  }
+
+  redirectToHome = () => {
+    return <Redirect to="/"/>
   }
 
   handleShowLoginForm = () => {
@@ -131,7 +135,7 @@ class App extends Component {
               <Route exact path="/" component={ StoredTimeline }/>
               <Route path="/bloggers" component={ StoredBloggers }/>
               <Route path="/beloved" component={ StoredBeloved }/>
-              { loggedUser ? <Route path="/user" component={ StoredUserpanel }/> : <Redirect to="/"/> }
+              <Route path="/user" component={ loggedUser ? StoredUserpanel : this.redirectToHome }/>
               <Route path="/post/:id" component={ Post }/>
               <Route component={ NotFound }/>
             </Switch>
