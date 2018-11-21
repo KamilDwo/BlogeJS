@@ -5,7 +5,8 @@
 * ReactJS
 * Redux
 * Ant Design
-* GraphQL
+* MongoDB
 * React Router
 * Styled Components
 * Axios
+* Redux-Thunk
