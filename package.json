@@ -18,10 +18,12 @@
     "redux": "^4.0.1",
     "redux-logger": "^3.0.6",
     "redux-thunk": "^2.3.0",
-    "styled-components": "^4.0.2"
+    "styled-components": "^4.0.2",
+    "mongoose": "~3.6.13",
+    "body-parser": "~1.0.1"
   },
   "scripts": {
-    "start": "react-scripts start",
+    "start": "node server/server.js & react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
