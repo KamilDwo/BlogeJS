@@ -1,7 +1,7 @@
 import React, {Component} from 'react'
 import StoredTimeline from './components/Timeline'
 import Foot from './components/Foot'
-import Post from './components/Post'
+import StoredPost from './components/Post'
 import StoredBloggers from './components/Bloggers'
 import StoredBeloved from './components/Beloved'
 import NotFound from './components/NotFound'
@@ -136,7 +136,7 @@ class App extends Component {
               <Route path="/bloggers" component={ StoredBloggers }/>
               <Route path="/beloved" component={ StoredBeloved }/>
               <Route path="/user" component={ loggedUser ? StoredUserpanel : this.redirectToHome }/>
-              <Route path="/post/:id" component={ Post }/>
+              <Route path="/post/:id" component={ StoredPost }/>
               <Route component={ NotFound }/>
             </Switch>
           </Content>

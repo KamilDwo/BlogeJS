@@ -31,7 +31,8 @@ const StyledPagination = styled(Pagination)`
 
 const StyledDivider = styled(Divider)`
   &&{
-    margin-top: 50px;
+    margin-top: 47px;
+    margin-bottom: 27px;
     &:before{
       width: 5.8%;
     }
@@ -45,9 +46,13 @@ const StyledContent = styled(Content)`
   &&{
     background-color: #fff;
     user-select: none;
-    p {
-      max-width: 100%;
-      word-break: break-all;
+    .post-container{
+      display: block;
+      margin-top: 65px;
+      p {
+        max-width: 100%;
+        word-break: break-all;
+      }
     }
   }
 `
@@ -55,9 +60,18 @@ const StyledContent = styled(Content)`
 const StyledAffixContainer = styled.div`
   background-color: #fff;
   box-sizing: border-box;
-  padding: 15px;
-  border: 1px solid rgb(232, 232, 232);
+  padding: 10px;
+  width: 54px;
+  border: 1px solid transparent;
   z-index: 1;
+  transition: border 0.3s;
+  border-radius: 4px;
+  border-top-right-radius: 0;
+  border-bottom-right-radius: 0;
+  &.affixedtrue {
+    border: 1px solid rgb(232, 232, 232);
+    border-right: 0;
+  }
 `
 
 const StyledSider = styled(Sider)`

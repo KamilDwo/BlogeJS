@@ -71,7 +71,7 @@ class Timeline extends Component {
       stringKey2 = `r2${ i }`
 
       rowContents.push(<Link to={ postUrl } key={ i }>
-        <StyledCol span={ 8 } >
+        <StyledCol xl={ 8 } lg={ 12 } md={ 12 }>
           <Card>
             <Meta
               avatar={ <GetAvatar id={ rows[i].user }/> }

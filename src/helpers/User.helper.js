@@ -45,7 +45,6 @@ class GetUser extends Component {
         ) }
         <h3>{ this.props.post }</h3>
         by { username }
-        <StyledDivider orientation="left">{ this.props.intro }</StyledDivider>
       </React.Fragment>
     );
   }

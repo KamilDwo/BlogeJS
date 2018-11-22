@@ -5,6 +5,7 @@ import { Link } from 'react-router-dom'
 import { StyledContent, StyledAffixContainer } from '../styles/Styles.style'
 import { Redirect } from 'react-router-dom'
 import GetUser from '../helpers/User.helper'
+import { connect } from 'react-redux'
 
 class Post extends Component {
   constructor(props) {
@@ -41,42 +42,37 @@ class Post extends Component {
     }
   }
 
-  render(){
-    const { exists, postLoaded, isLoading, affixed } = this.state
+  handleClick(affixed) {
+    console.log(affixed);
+  }
 
-    function PostContent(props) {
-      return (<React.Fragment>
-        { !isLoading ?
-          <React.Fragment>
-            <Affix offsetTop={ 24 } style={{ position: 'absolute', right: '41px', zIndex: 1 }} onChange={ affixed => console.log(affixed) }>
-              <StyledAffixContainer>
-                <Button type="primary" shape="circle" icon="heart" style={{ display: 'block' }}/>
-                <Button shape="circle" icon="user-add" style={{ display: 'block', marginTop: '10px' }}/>
-                <Button shape="circle" icon="message" style={{ display: 'block', marginTop: '10px' }}/>
-              </StyledAffixContainer>
-            </Affix>
-            <GetUser id={ props.post.user } post={ props.post.title } intro={ props.post.intro }/>
-            <p>{ props.post.content }</p>
-            <br/>
-            <p>{ props.post.content }</p>
-            <br/>
-            <p>{ props.post.content }</p>
-            <br/>
-            <p>{ props.post.content }</p>
-            <br/>
-            <p>{ props.post.content }</p>
-            <br/>
-            <p>{ props.post.content }</p>
-            <br/>
-            <p>{ props.post.content }</p>
-            <br/>
-            <p>{ props.post.content }</p>
-          </React.Fragment>
-        :
-        <Skeleton active paragraph={{ rows: 4 }} />
-        }
-      </React.Fragment>
-      )
+  render(){
+    const { exists, postLoaded, isLoading } = this.state
+    let container
+    const postRows = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+    const { affixed } = this.props.affix
+
+    if (exists) {
+      container = (isLoading ? <Skeleton active paragraph={{ rows: 4 }} /> :
+        <React.Fragment>
+          <Affix offsetTop={ 24 } style={{ position: 'absolute', right: '17px', top: '73px' }} onChange={ affixed => this.props.onPageUpdate({ affixed: affixed }) }>
+            <StyledAffixContainer className={`affixed${ affixed }`}>
+              <Button type="primary" shape="circle" icon="heart" style={{ display: 'block' }}/>
+              <Button shape="circle" icon="user-add" style={{ display: 'block', marginTop: '10px' }}/>
+              <Button shape="circle" icon="message" style={{ display: 'block', marginTop: '10px' }}/>
+            </StyledAffixContainer>
+          </Affix>
+          <GetUser id={ postLoaded.user } post={ postLoaded.title } intro={ postLoaded.intro }/>
+          <div className="post-container">
+            { postRows.map(( number ) =>
+              <p key={ number }>
+                { postLoaded.content }
+              </p>
+            ) }
+          </div>
+        </React.Fragment>)
+    } else {
+      container = <Redirect to="/"/>
     }
 
     return (
@@ -87,11 +83,26 @@ class Post extends Component {
           </Button>
         </Link>
         <StyledContent style={{ padding: 24, border: '1px solid #e8e8e8' }}>
-          { exists ? <PostContent post={ postLoaded }/> : <Redirect to="/"/> }
+          { container }
         </StyledContent>
       </React.Fragment>
     )
   }
 }
 
-export default Post
+const mapStateToProps = state => ({
+  affix: state.affix
+})
+
+const mapDispatchToProps = dispatch => ({
+  onPageUpdate: (affix) => {
+    dispatch({
+      type: 'TOGGLE_AFFIXED',
+      payload: affix
+    })
+  },
+})
+
+const StoredPost = connect(mapStateToProps, mapDispatchToProps)(Post)
+
+export default StoredPost
