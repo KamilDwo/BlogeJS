@@ -1,8 +1,8 @@
 import React, {Component} from 'react'
-import { Icon, Button, Skeleton } from 'antd'
+import { Icon, Button, Skeleton, Affix } from 'antd'
 import 'antd/dist/antd.css'
 import { Link } from 'react-router-dom'
-import { StyledContent } from '../styles/Styles.style'
+import { StyledContent, StyledAffixContainer } from '../styles/Styles.style'
 import { Redirect } from 'react-router-dom'
 import GetUser from '../helpers/User.helper'
 
@@ -23,7 +23,6 @@ class Post extends Component {
     this.loadPost(id, this)
   }
 
-
   loadPost = (id, component) => {
     if(localStorage.getItem('posts')){
       let posts = JSON.parse(localStorage.getItem('posts')).posts
@@ -43,13 +42,35 @@ class Post extends Component {
   }
 
   render(){
-    const { exists, postLoaded, isLoading } = this.state
+    const { exists, postLoaded, isLoading, affixed } = this.state
 
     function PostContent(props) {
       return (<React.Fragment>
         { !isLoading ?
           <React.Fragment>
+            <Affix offsetTop={ 24 } style={{ position: 'absolute', right: '41px', zIndex: 1 }} onChange={ affixed => console.log(affixed) }>
+              <StyledAffixContainer>
+                <Button type="primary" shape="circle" icon="heart" style={{ display: 'block' }}/>
+                <Button shape="circle" icon="user-add" style={{ display: 'block', marginTop: '10px' }}/>
+                <Button shape="circle" icon="message" style={{ display: 'block', marginTop: '10px' }}/>
+              </StyledAffixContainer>
+            </Affix>
             <GetUser id={ props.post.user } post={ props.post.title } intro={ props.post.intro }/>
+            <p>{ props.post.content }</p>
+            <br/>
+            <p>{ props.post.content }</p>
+            <br/>
+            <p>{ props.post.content }</p>
+            <br/>
+            <p>{ props.post.content }</p>
+            <br/>
+            <p>{ props.post.content }</p>
+            <br/>
+            <p>{ props.post.content }</p>
+            <br/>
+            <p>{ props.post.content }</p>
+            <br/>
+            <p>{ props.post.content }</p>
           </React.Fragment>
         :
         <Skeleton active paragraph={{ rows: 4 }} />

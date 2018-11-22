@@ -67,7 +67,7 @@ class App extends Component {
       let posts = [], number
       for (let i = 0; i < 139; i++) {
         number = i + 1
-        posts.push({ title: RandomTitle(15, 1), intro: RandomTitle(15, 1), user: parseInt(RandomInt(1, 493)), url: number + '-' + RandomTitle(10, 3) })
+        posts.push({ title: RandomTitle(15, 1), intro: RandomTitle(15, 1), user: parseInt(RandomInt(1, 493)), url: number + '-' + RandomTitle(10, 3), content: RandomTitle(700, 1) })
       }
       localStorage.setItem('posts', JSON.stringify({ posts }))
     }

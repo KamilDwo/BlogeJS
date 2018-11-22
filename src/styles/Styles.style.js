@@ -31,11 +31,12 @@ const StyledPagination = styled(Pagination)`
 
 const StyledDivider = styled(Divider)`
   &&{
+    margin-top: 50px;
     &:before{
-      width: 64px;
+      width: 5.8%;
     }
     &:after{
-      width: calc(100% - 64px);
+      width: calc(100% - 5.8%);
     }
   }
 `
@@ -44,7 +45,19 @@ const StyledContent = styled(Content)`
   &&{
     background-color: #fff;
     user-select: none;
+    p {
+      max-width: 100%;
+      word-break: break-all;
+    }
   }
+`
+
+const StyledAffixContainer = styled.div`
+  background-color: #fff;
+  box-sizing: border-box;
+  padding: 15px;
+  border: 1px solid rgb(232, 232, 232);
+  z-index: 1;
 `
 
 const StyledSider = styled(Sider)`
@@ -118,5 +131,6 @@ export {
   StyledSubmit,
   StyledMenu,
   StyledContent,
-  StyledDivider
+  StyledDivider,
+  StyledAffixContainer
 }
