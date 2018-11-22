@@ -1,9 +1,9 @@
 import styled from 'styled-components'
-import { Layout, Menu, Pagination, Col, Button} from 'antd'
+import { Layout, Menu, Pagination, Col, Button, Divider } from 'antd'
 import 'antd/dist/antd.css'
 import { createGlobalStyle } from 'styled-components'
 
-const { Sider } = Layout
+const { Sider, Content } = Layout
 
 const GlobalStyle = createGlobalStyle `
   body {
@@ -26,6 +26,24 @@ const StyledLogo = styled.div `
 const StyledPagination = styled(Pagination)`
   &&{
     margin-top: 24px;
+  }
+`
+
+const StyledDivider = styled(Divider)`
+  &&{
+    &:before{
+      width: 64px;
+    }
+    &:after{
+      width: calc(100% - 64px);
+    }
+  }
+`
+
+const StyledContent = styled(Content)`
+  &&{
+    background-color: #fff;
+    user-select: none;
   }
 `
 
@@ -98,5 +116,7 @@ export {
   StyledPagination,
   StyledCol,
   StyledSubmit,
-  StyledMenu
+  StyledMenu,
+  StyledContent,
+  StyledDivider
 }

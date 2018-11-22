@@ -1,8 +1,9 @@
 import React, { Component } from 'react'
-import { Avatar, Tooltip } from 'antd'
+import { Avatar, Tooltip} from 'antd'
 import axios from 'axios'
+import { StyledDivider } from '../styles/Styles.style'
 
-class GetAvatar extends Component {
+class GetUser extends Component {
   state = {
     avatar: '',
     username: '',
@@ -31,20 +32,23 @@ class GetAvatar extends Component {
 
     return (
       <React.Fragment>
-        <div>
-          { !isLoading ? (
+        { !isLoading ? (
+          <React.Fragment>
             <Tooltip placement="rightTop" title={ username }>
-              <Avatar src={ avatar } size={ 'large' } alt="Avatar"/>
+              <Avatar src={ avatar } size={ 64 } alt="Avatar" style={{ float: 'left', marginRight: '16px' }}/>
             </Tooltip>
-          ) : (
-            <Tooltip placement="rightTop" title="Loading...">
-              <Avatar icon="user" size={ 'large' } alt="Avatar loading..."/>
-            </Tooltip>
-          ) }
-        </div>
+          </React.Fragment>
+        ) : (
+          <Tooltip placement="rightTop" title="Loading...">
+            <Avatar icon="user" size={ 64 } alt="Avatar loading..." style={{ float: 'left', marginRight: '16px' }}/>
+          </Tooltip>
+        ) }
+        <h3>{ this.props.post }</h3>
+        by { username }
+        <StyledDivider orientation="left">{ this.props.intro }</StyledDivider>
       </React.Fragment>
     );
   }
 }
 
-export default GetAvatar
+export default GetUser
