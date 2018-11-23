@@ -7,7 +7,6 @@ import { Redirect } from 'react-router-dom'
 import GetUser from '../helpers/User.helper'
 import { connect } from 'react-redux'
 import CountRate from '../helpers/Rates.helper'
-import { UserContext } from '../context/User.context';
 import StoredModalLoginForm from '../components/LoginForm'
 
 const ButtonGroup = Button.Group
@@ -16,10 +15,12 @@ const RatesTooltip = (info) => {
   const { rate, rates } = info
   let ratesTest
 
-  if(rates === 0 || rates > 2){
+  if(rates === 0){
     ratesTest = 'rates'
   } else if(rates === 1){
     ratesTest = 'rate'
+  } else {
+    ratesTest = 'rates'
   }
 
   return (<React.Fragment>{ rate } stars from { rates } { ratesTest }</React.Fragment>)
@@ -35,7 +36,7 @@ class Post extends Component {
       postLoaded: null,
       postRate: 0,
       postRates: 0,
-      loginModal: false
+      postVoted: false
     }
   }
 
@@ -56,10 +57,8 @@ class Post extends Component {
   }
 
   handleClick() {
-      this.setState(state => ({
-        loginModal: !state.loginModal
-      }));
-    }
+    this.props.onLoginModalOpen({ showLoginModal: true })
+  }
 
   loadPost = (id, component) => {
     if(localStorage.getItem('posts')){
@@ -79,11 +78,21 @@ class Post extends Component {
     }
   }
 
+  handleRate = (value) => {
+    let rates = JSON.parse(localStorage.getItem('rates')).rates
+    const { postId } = this.state
+
+    rates.push({ post: postId, rate: value })
+    localStorage.setItem('rates', JSON.stringify({ rates }))
+    this.setState({ postRate: CountRate(postId, 1), postRates: CountRate(postId, 2) })
+  }
+
   render(){
-    const { exists, postLoaded, isLoading, postRate, postRates, loginModal } = this.state
+    const { exists, postLoaded, isLoading, postRate, postRates } = this.state
     let container
     const postRows = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
     const { affixed } = this.props.affix
+    const { loggedUser } = this.props.user
 
     if (exists) {
       container = (isLoading ? <Skeleton active paragraph={{ rows: 4 }} /> :
@@ -105,23 +114,22 @@ class Post extends Component {
             <StyledDivider></StyledDivider>
             <Row>
               <StyledColPost lg={ 12 } xs={ 24 }>
-                <UserContext.Consumer>
-                  { (userLogged) => userLogged ? <Popover
+                { loggedUser ?
+                  <Popover
                     placement="topLeft"
                     title={ <React.Fragment>Rate this post</React.Fragment> }
                     content={ <RatesTooltip rate={ postRate } rates={ postRates }/> }>
                     <div style={{ display: 'inline-block' }}>
-                      <Rate character={ <Icon type="star" /> } count={ 5 } value={ postRate } allowHalf/>
+                      <Rate character={ <Icon type="star" /> } count={ 5 } value={ postRate } onChange={ this.handleRate }/>
                     </div>
                   </Popover> : <Popover
                     placement="topLeft"
                     title={ <React.Fragment>Please <span style={{ cursor: 'pointer', color: '#1890ff' }} onClick={ this.handleClick.bind(this) }>Login</span> to rate</React.Fragment> }
                     content={ <RatesTooltip rate={ postRate } rates={ postRates }/> }>
                     <div style={{ display: 'inline-block' }}>
-                      <Rate character={ <Icon type="star" /> } count={ 5 } value={ postRate } allowHalf disabled/>
+                      <Rate character={ <Icon type="star" /> } count={ 5 } value={ postRate } disabled/>
                     </div>
                   </Popover> }
-                </UserContext.Consumer>
               </StyledColPost>
               <Col lg={ 12 } xs={ 24 }><ButtonGroup style={{ float: 'right' }}>
                 <Button>
@@ -141,7 +149,7 @@ class Post extends Component {
 
     return (
       <React.Fragment>
-        { loginModal ? <StoredModalLoginForm/> : "" }
+        { loggedUser ? <StoredModalLoginForm/> : "" }
         <Link to="/">
           <Button type="default" style={{ margin: '0 0 24px 0'}}>
             <Icon type="left" />Go back
@@ -156,7 +164,8 @@ class Post extends Component {
 }
 
 const mapStateToProps = state => ({
-  affix: state.affix
+  affix: state.affix,
+  user: state.user
 })
 
 const mapDispatchToProps = dispatch => ({
@@ -166,6 +175,12 @@ const mapDispatchToProps = dispatch => ({
       payload: affix
     })
   },
+  onLoginModalOpen: (user) => {
+    dispatch({
+      type: 'OPEN_MODAL',
+      payload: user,
+    })
+  }
 })
 
 const StoredPost = connect(mapStateToProps, mapDispatchToProps)(Post)

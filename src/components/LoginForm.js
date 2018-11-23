@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Form, Icon, Input, notification, Modal } from 'antd'
+import { Form, Icon, Input, notification, Modal, Button, Divider } from 'antd'
 import { StyledSubmit } from '../styles/Styles.style'
 import { connect } from 'react-redux'
 
@@ -87,7 +87,8 @@ class NormalLoginForm extends Component {
               <StyledSubmit type="primary" htmlType="submit" className="login-form-button">
                 Log in
               </StyledSubmit>
-              Or <a href="user/register">register now!</a>
+              <Divider>or</Divider>
+              <Button style={{ width: '100%' }}>Join us now</Button>
             </FormItem>
           </Form>
         </Modal>
