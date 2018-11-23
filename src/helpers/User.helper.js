@@ -1,7 +1,6 @@
 import React, { Component } from 'react'
 import { Avatar, Tooltip} from 'antd'
 import axios from 'axios'
-import { StyledDivider } from '../styles/Styles.style'
 
 class GetUser extends Component {
   state = {

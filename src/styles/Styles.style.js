@@ -114,6 +114,14 @@ const StyledCol = styled(Col)`
   }
 `
 
+const StyledColPost = styled(Col)`
+  &&{
+    @media (max-width: 768px){
+      margin-bottom: 20px;
+    }
+  }
+`
+
 const StyledMenuitem = styled(Menu.Item)`
   && {
     user-select: none;
@@ -146,5 +154,6 @@ export {
   StyledMenu,
   StyledContent,
   StyledDivider,
-  StyledAffixContainer
+  StyledAffixContainer,
+  StyledColPost
 }

@@ -1,26 +1,17 @@
 import React, { Component } from 'react'
 import WrappedNormalLoginForm from './LoginForm'
-import { Modal, Layout, Button } from 'antd'
+import { Modal, Layout, Button, notification } from 'antd'
 import { connect } from 'react-redux'
+import { Redirect } from 'react-router-dom'
 
 const { Content } = Layout
-
-
-const LoggedPanel = () => {
-  return (<Content style={{ background: '#fff', padding: 24, margin: 0, minHeight: 280 }}>
-    Hello <Button onClick={ Logout }>Logout</Button>
-  </Content>)
-}
-
-const Logout = () => {
-  return (<React.Fragment/>)
-}
 
 class Userpanel extends Component {
   constructor() {
     super()
+
     this.state = {
-      visible: true
+      redirectFromUser: false
     }
   }
 
@@ -28,31 +19,46 @@ class Userpanel extends Component {
     this.props.onPageUpdate({ currentPage: 4 })
   }
 
-  handleCancel = () => {
-    this.setState({ visible: false })
+  handleClick = () => {
+    localStorage.removeItem('user')
+    notification.open({
+      type: 'success',
+      message: 'Success',
+      description: 'You have been successfully logged out',
+    })
+    this.props.onLogout({ loggedUser: false, userName: '', redirect: true })
   }
 
   render() {
-    const { loggedUser } = this.props.user
+    const { loggedUser, showLoginModal } = this.props.user
+    const { redirectFromUser } = this.state
 
     const Login = () => {
+      let pathname = window.location.pathname
+
+      if(pathname === '/user' && !redirectFromUser){
+        this.setState({ redirectFromUser: true })
+      }
+
       return (
         <Modal
           title="Login"
-          visible={ this.state.visible }
+          visible={ showLoginModal }
           onOk={ this.handleOk }
           onCancel={ this.handleCancel }
-          footer={ null }
-          >
+          footer={ null }>
           <WrappedNormalLoginForm/>
         </Modal>
       )
     }
 
-
-
     return (<React.Fragment>
-      { loggedUser ? <LoggedPanel/> : <Login/>}
+      <Content style={{ background: '#fff', padding: 24, margin: 0, minHeight: 280 }}>
+        { redirectFromUser ? <Redirect to="/"/> : '' }
+        { loggedUser ?
+          <Button onClick={ this.handleClick }>Logout</Button>
+        : <Login/> }
+      </Content>
     </React.Fragment>
     )
   }
@@ -70,6 +76,12 @@ const mapDispatchToProps = dispatch => ({
       payload: page
     })
   },
+  onLogout: (user) => {
+    dispatch({
+      type: 'LOGOUT_SUCCESS',
+      payload: user,
+    })
+  }
 })
 
 const StoredUserpanel = connect(mapStateToProps, mapDispatchToProps)(Userpanel)

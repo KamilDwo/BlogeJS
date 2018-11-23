@@ -55,9 +55,9 @@ class Timeline extends Component {
 
   itemRender = (current, type, originalElement) => {
     if (type === 'prev') {
-      return <a><Icon type="left-circle" alt="Previous page" style={{ fontSize: '20px', position: 'relative', top: '3px' }}/></a>
+      return <Icon type="left-circle" alt="Previous page" style={{ fontSize: '20px', position: 'relative', top: '3px' }}/>
     } if (type === 'next') {
-      return <a><Icon type="right-circle" alt="Next page" style={{ fontSize: '20px', position: 'relative', top: '3px' }}/></a>
+      return <Icon type="right-circle" alt="Next page" style={{ fontSize: '20px', position: 'relative', top: '3px' }}/>
     }
     return originalElement
   }
@@ -110,6 +110,7 @@ class Timeline extends Component {
 }
 
 const mapStateToProps = state => ({
+  user: state.user,
   page: state.page
 })
 
@@ -120,6 +121,12 @@ const mapDispatchToProps = dispatch => ({
       payload: page
     })
   },
+  onLoginModalClose: (user) => {
+    dispatch({
+      type: 'CLOSE_MODAL',
+      payload: user,
+    })
+  }
 })
 
 const StoredTimeline = connect(mapStateToProps, mapDispatchToProps)(Timeline)

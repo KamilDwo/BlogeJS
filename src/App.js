@@ -12,45 +12,29 @@ import StoredUserpanel from './components/Userpanel'
 import { StyledLogo, StyledSider, StyledLayout, StyledMenuitem, GlobalStyle, StyledMenu } from './styles/Styles.style'
 import StoredModalLoginForm from './components/LoginForm'
 import { connect } from 'react-redux'
+import { UserContext } from './context/User.context'
+import { RandomTitle, RandomInt } from './helpers/Random.helper'
 
 const { Footer, Content } = Layout
-
-function RandomTitle(characters, type) {
-  let text = ''
-  let possible = ''
-
-  if(type === 1){
-    possible = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789 '
-  } else if(type === 3){
-    possible = 'abcdefghijklmnopqrstuvwxyz'
-  } else {
-    possible = '123456789'
-  }
-  for (let i = 0; i < characters; i++) {
-    text += possible.charAt(Math.floor(Math.random() * possible.length))
-  }
-  return text
-}
-
-function RandomInt(min, max) {
-  return Math.floor(Math.random() * (max - min + 1) + min)
-}
 
 class App extends Component {
   constructor() {
     super()
+
     this.state = {
-      collapsed: false,
       menu: {
-        currentPage: 1,
-        showLoginForm: false,
-        collapsed: false
+        currentPage: 1
       }
     }
   }
 
   onCollapse = (collapsed) => {
-    this.setState({ collapsed })
+    this.setState({
+      menu: {
+        ...this.state.menu,
+        collapsedSider: collapsed
+      }
+    })
   }
 
   updateCurrentPage = (currentPage) => {
@@ -71,6 +55,10 @@ class App extends Component {
       }
       localStorage.setItem('posts', JSON.stringify({ posts }))
     }
+    if(!localStorage.getItem('rates')){
+      let rates = []
+      localStorage.setItem('rates', JSON.stringify({ rates }))
+    }
   }
 
   redirectToHome = () => {
@@ -78,25 +66,21 @@ class App extends Component {
   }
 
   handleShowLoginForm = () => {
-    this.setState({
-      menu: {
-        ...this.state.menu,
-        showLoginForm: true
-      }
-    })
+    this.props.onLoginModalOpen({ showLoginModal: true })
   }
 
-  render() {
-    const { showLoginForm } = this.state.menu
-    const { loggedUser, userName } = this.props.user
+  render = () => {
+    const { collapsedSider } = this.state.menu
+    const { loggedUser, userName, showLoginModal } = this.props.user
+    const { currentPage } = this.props.page
 
     return (<Router>
       <Layout>
         <GlobalStyle/>
         <BackTop/>
         <StyledSider breakpoint="lg" collapsedWidth="50" collapsible onCollapse={ this.onCollapse }>
-          <StyledLogo collapsed={ this.state.collapsed ? 'collapsed' : '' }>BlogeJS</StyledLogo>
-          <StyledMenu theme="dark" mode="inline" selectedKeys={ [String(this.props.page.currentPage)] } collapsed={ this.state.collapsed ? 'collapsed' : '' }>
+          <StyledLogo collapsed={ collapsedSider ? 'collapsed' : '' }>BlogeJS</StyledLogo>
+          <StyledMenu theme="dark" mode="inline" selectedKeys={[ String(currentPage) ]} collapsed={ collapsedSider ? 'collapsed' : '' }>
             <StyledMenuitem key="1">
               <Link to="/">
                 <Icon type="home" theme="outlined" />
@@ -128,17 +112,19 @@ class App extends Component {
             </StyledMenuitem>
           </StyledMenu>
         </StyledSider>
-        <StyledLayout collapsed={ this.state.collapsed ? 'collapsed' : '' }>
+        <StyledLayout collapsed={ collapsedSider ? 'collapsed' : '' }>
           <Content style={{ margin: '16px 16px 0' }}>
-            { showLoginForm ? <StoredModalLoginForm/> : "" }
-            <Switch>
-              <Route exact path="/" component={ StoredTimeline }/>
-              <Route path="/bloggers" component={ StoredBloggers }/>
-              <Route path="/beloved" component={ StoredBeloved }/>
-              <Route path="/user" component={ loggedUser ? StoredUserpanel : this.redirectToHome }/>
-              <Route path="/post/:id" component={ StoredPost }/>
-              <Route component={ NotFound }/>
-            </Switch>
+            <UserContext.Provider value={{ loggedUser: loggedUser }}>
+              { showLoginModal ? <StoredModalLoginForm/> : '' }
+              <Switch>
+                <Route exact path="/" component={ StoredTimeline }/>
+                <Route path="/bloggers" component={ StoredBloggers }/>
+                <Route path="/beloved" component={ StoredBeloved }/>
+                <Route path="/user" component={ StoredUserpanel }/>
+                <Route path="/post/:id" component={ StoredPost }/>
+                <Route component={ NotFound }/>
+              </Switch>
+            </UserContext.Provider>
           </Content>
           <Footer style={{ textAlign: 'center' }}>
             <Foot/>
@@ -154,6 +140,15 @@ const mapStateToProps = state => ({
   page: state.page
 })
 
-const StoredApp = connect(mapStateToProps)(App)
+const mapDispatchToProps = dispatch => ({
+  onLoginModalOpen: (user) => {
+    dispatch({
+      type: 'OPEN_MODAL',
+      payload: user,
+    })
+  }
+})
+
+const StoredApp = connect(mapStateToProps, mapDispatchToProps)(App)
 
 export default StoredApp

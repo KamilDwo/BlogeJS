@@ -1,6 +1,5 @@
 import React, { Component } from 'react'
-import { Form, Icon, Input, notification } from 'antd'
-import { Modal } from 'antd'
+import { Form, Icon, Input, notification, Modal } from 'antd'
 import { StyledSubmit } from '../styles/Styles.style'
 import { connect } from 'react-redux'
 
@@ -13,13 +12,13 @@ const openNotificationWithIcon = (type) => {
     case type === 'success':
       texts = {
         message: 'Success',
-        description: 'You are now logged in.'
+        description: 'You are now logged in'
       }
       break;
       case type === 'error':
         texts = {
           message: 'Error',
-          description: 'Wrong username of password.'
+          description: 'Wrong username of password'
         }
         break;
         default:
@@ -53,19 +52,23 @@ class NormalLoginForm extends Component {
     })
   }
 
+  handleCancel() {
+    this.props.onLoginModalClose({ showLoginModal: false })
+  }
+
   render() {
     const { getFieldDecorator } = this.props.form
+    const { showLoginModal } = this.props.user
 
     return (
       <React.Fragment>
         <Modal
           title="Login"
-          visible={this.state.visible}
-          onOk={this.handleOk}
-          onCancel={this.handleCancel}
-          footer={null}
-        >
-          <Form onSubmit={this.handleSubmit} className="login-form">
+          visible={ showLoginModal }
+          onOk={ this.handleOk }
+          onCancel={ this.handleCancel.bind(this) }
+          footer={ null }>
+          <Form onSubmit={ this.handleSubmit.bind(this) } className="login-form">
             <FormItem>
               {getFieldDecorator('userName', {
                 rules: [{ required: true, message: 'Please input your username!' }],
@@ -111,6 +114,12 @@ const mapDispatchToProps = dispatch => ({
     dispatch({
       type: 'SET_PAGE',
       payload: page
+    })
+  },
+  onLoginModalClose: (user) => {
+    dispatch({
+      type: 'CLOSE_MODAL',
+      payload: user,
     })
   }
 })

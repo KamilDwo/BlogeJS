@@ -1,6 +1,11 @@
 {
-  "name": "blogejs",
-  "version": "0.1.0",
+  "name": "BlogeJS",
+  "description": "BlogeJS - social blogging platform",
+  "keywords": ["blogejs", "blog", "social", "spa", "react", "redux"],
+  "repository": "https://github.com/KamilDwo/BlogeJS.git",
+  "homepage": "https://blogejs.herokuapp.com/",
+  "author": "Kamil Dworak <kontakt@heartit.pl>",
+  "version": "0.3.0",
   "private": true,
   "dependencies": {
     "antd": "^3.10.1",
