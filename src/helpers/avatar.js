@@ -3,6 +3,8 @@ import { Avatar, Tooltip } from 'antd'
 import axios from 'axios'
 
 class GetAvatar extends Component {
+  _isMounted = false
+
   state = {
     avatar: '',
     username: '',
@@ -13,17 +15,24 @@ class GetAvatar extends Component {
   getPosts() {
     axios.get(`https://rickandmortyapi.com/api/character/${ this.props.id }`)
     .then(response => {
-      this.setState({
-        avatar: response.data.image,
-        username: response.data.name,
-        isLoading: false
-      })
+       if (this._isMounted) {
+        this.setState({
+          avatar: response.data.image,
+          username: response.data.name,
+          isLoading: false
+        })
+      }
     })
     .catch(error => this.setState({ error, isLoading: false }))
   }
 
   componentDidMount() {
-    this.getPosts();
+    this._isMounted = true
+    this.getPosts()
+  }
+
+  componentWillUnmount() {
+    this._isMounted = false
   }
 
   render() {

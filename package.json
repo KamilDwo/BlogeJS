@@ -7,7 +7,9 @@
     "social",
     "spa",
     "react",
-    "redux"
+    "redux",
+    "enzyme",
+    "jest"
   ],
   "repository": "https://github.com/KamilDwo/BlogeJS.git",
   "homepage": "https://blogejs.herokuapp.com/",
@@ -20,6 +22,7 @@
     "babel-plugin-import": "^1.10.0",
     "body-parser": "~1.0.1",
     "cors": "^2.8.5",
+    "enzyme-to-json": "^3.3.4",
     "express": "^4.16.4",
     "mongoose": "~3.6.13",
     "react": "^16.5.2",
