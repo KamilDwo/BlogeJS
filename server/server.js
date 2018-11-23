@@ -5,6 +5,7 @@ let app = express()
 let port = 3002
 let bodyParser = require('body-parser')
 let mongoose = require('mongoose')
+let cors = require('cors')
 
 let nameSchema = new mongoose.Schema({
   firstName: String,
@@ -16,6 +17,7 @@ mongoose.connect(conf)
 
 let User = mongoose.model('User', nameSchema)
 
+app.use(cors())
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: true }))
 
