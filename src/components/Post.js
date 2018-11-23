@@ -1,6 +1,5 @@
 import React, {Component} from 'react'
 import { Icon, Button, Skeleton, Affix, Rate, Row, Col, Popover, Tooltip } from 'antd'
-import 'antd/dist/antd.css'
 import { Link } from 'react-router-dom'
 import { StyledContent, StyledAffixContainer, StyledDivider, StyledColPost } from '../styles/Styles.style'
 import { Redirect } from 'react-router-dom'

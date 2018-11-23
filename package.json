@@ -1,7 +1,14 @@
 {
   "name": "BlogeJS",
   "description": "BlogeJS - social blogging platform",
-  "keywords": ["blogejs", "blog", "social", "spa", "react", "redux"],
+  "keywords": [
+    "blogejs",
+    "blog",
+    "social",
+    "spa",
+    "react",
+    "redux"
+  ],
   "repository": "https://github.com/KamilDwo/BlogeJS.git",
   "homepage": "https://blogejs.herokuapp.com/",
   "author": "Kamil Dworak <kontakt@heartit.pl>",
@@ -11,9 +18,12 @@
     "antd": "^3.10.1",
     "axios": "^0.18.0",
     "babel-plugin-import": "^1.10.0",
+    "body-parser": "~1.0.1",
     "cors": "^2.8.5",
     "express": "^4.16.4",
+    "mongoose": "~3.6.13",
     "react": "^16.5.2",
+    "react-app-rewire-less": "^2.1.3",
     "react-app-rewired": "^1.6.2",
     "react-bootstrap": "^0.32.4",
     "react-dom": "^16.5.2",
@@ -23,9 +33,7 @@
     "redux": "^4.0.1",
     "redux-logger": "^3.0.6",
     "redux-thunk": "^2.3.0",
-    "styled-components": "^4.1.1",
-    "mongoose": "~3.6.13",
-    "body-parser": "~1.0.1"
+    "styled-components": "^4.1.1"
   },
   "scripts": {
     "start": "node server/server.js & react-scripts start",
@@ -43,6 +51,9 @@
     "not op_mini all"
   ],
   "devDependencies": {
-    "babel-plugin-transform-object-rest-spread": "^6.26.0"
+    "babel-plugin-transform-object-rest-spread": "^6.26.0",
+    "enzyme": "^3.7.0",
+    "enzyme-adapter-react-16": "^1.7.0",
+    "jest": "^23.6.0"
   }
 }

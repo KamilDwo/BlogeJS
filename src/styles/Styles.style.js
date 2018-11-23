@@ -1,6 +1,5 @@
 import styled from 'styled-components'
 import { Layout, Menu, Pagination, Col, Button, Divider } from 'antd'
-import 'antd/dist/antd.css'
 import { createGlobalStyle } from 'styled-components'
 
 const { Sider, Content } = Layout
