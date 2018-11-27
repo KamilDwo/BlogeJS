@@ -1,17 +1,120 @@
 import React, { Component } from 'react'
 import WrappedNormalLoginForm from './LoginForm'
-import { Modal, Layout, Button, notification, Tabs, Form, Input, message } from 'antd'
+import { Modal, Layout, Button, notification, Tabs, Form, Input, message } from 'antd' // eslint-disable-line no-unused-vars
 import { connect } from 'react-redux'
 import { Redirect } from 'react-router-dom'
 import ReactQuill from 'react-quill'
 import 'react-quill/dist/quill.snow.css'
-import axios from 'axios'
+import axios from 'axios' // eslint-disable-line no-unused-vars
+import { StyledInputLabel, StyledInputError } from '../styles/Styles.style'
 
 const { Content } = Layout
 const ButtonGroup = Button.Group
 const TabPane = Tabs.TabPane
 const FormItem = Form.Item
 
+const AddModal = Form.create()(
+  class extends React.Component {
+    constructor() {
+      super()
+
+      this.state = {
+        postText: '',
+        contentError: false
+      }
+      this.handleChange = this.handleChange.bind(this)
+    }
+
+    handleChange(value) {
+      this.setState({ postText: value })
+    }
+
+    handleSubmit = (e) => {
+      const { postText } = this.state
+      const { form, onHidePostModal } = this.props
+
+      this.setState({ contentError: false })
+      e.preventDefault()
+
+      if(postText.length < 10){
+        this.setState({ contentError: true })
+      }
+
+      form.validateFields((err, values) => {
+        if (!err && postText.length >= 10) {
+          axios.post('http://127.0.0.1:3002/post', {
+            postTitle: values.postTitle,
+            postContent: postText
+          })
+          .then(function (response) {
+            if(response.status === 200){
+              message.success('Successfully added new post')
+              onHidePostModal({ showPostModal: false })
+            }
+          })
+          .catch(function (error) {
+            console.log(error)
+          })
+        }
+      })
+    }
+
+    render() {
+      const { form, showPostModal } = this.props
+      const { getFieldDecorator } = form
+      const { contentError } = this.state
+
+      /* eslint-disable */
+      const modules = {
+        toolbar: [
+          ['bold', 'italic', 'underline', 'strike', 'blockquote'],
+          [{'list': 'ordered'}, {'list': 'bullet'}, {'indent': '-1'}, {'indent': '+1'}],
+          ['link', 'image'],
+          ['clean']
+        ]
+      }
+      /* eslint-enable */
+
+      return (
+        <Modal
+          title="Add new post"
+          visible={ showPostModal }
+          onOk={ this.handleOk }
+          onCancel={ this.handleCancelAdding }
+          width={ 900 }
+          footer={ [
+            <Button key="back" onClick={ this.handleCancelAdding }>Cancel</Button>
+          ] }
+          style={{ top: 20 }}>
+          <Form onSubmit={ this.handleSubmit } className="add-form">
+            <FormItem
+            label="Title">
+              { getFieldDecorator('postTitle', {
+                rules: [{
+                  required: true, message: 'Please input title!',
+                }],
+              })(
+                <Input />
+              ) }
+            </FormItem>
+            <FormItem>
+              <StyledInputLabel>Content:</StyledInputLabel>
+              <ReactQuill value={ this.state.postText }
+                modules={ this.modules }
+                onChange={ this.handleChange } />
+              <StyledInputError showed={ contentError }>Please input content!</StyledInputError>
+            </FormItem>
+            <FormItem>
+              <Button type="primary" htmlType="submit">
+                Submit
+              </Button>
+            </FormItem>
+          </Form>
+        </Modal>
+      );
+    }
+  }
+);
 
 class Userpanel extends Component {
   constructor() {
@@ -81,50 +184,6 @@ class Userpanel extends Component {
       )
     }
 
-    const AddModal = () => {
-      return (<Modal
-        title="Add new post"
-        visible={ showPostModal }
-        onOk={ this.handleOk }
-        onCancel={ this.handleCancelAdding }
-        width={ 900 }
-        footer={ [
-          <Button key="back" onClick={ this.handleCancelAdding }>Cancel</Button>
-        ] }
-        style={{ top: 20 }}>
-        <Form onSubmit={ this.handleSubmit } className="add-form">
-          <FormItem
-            { ...formItemLayout }
-          label="Title">
-
-            <Input />
-            
-          </FormItem>
-          <FormItem>
-            <ReactQuill value={ this.state.postText }
-              modules={ this.modules }
-              onChange={ this.handleChange } />
-          </FormItem>
-          <FormItem>
-            <Button type="primary" htmlType="submit">
-              Submit
-            </Button>
-          </FormItem>
-        </Form>
-      </Modal>)
-    }
-
-    const formItemLayout = {
-      labelCol: {
-        xs: { span: 24 },
-        sm: { span: 3 },
-      },
-      wrapperCol: {
-        xs: { span: 24 },
-        sm: { span: 21 },
-      },
-    }
-
     const LoggedPanel = () => {
       return (<React.Fragment>
         <ButtonGroup>
@@ -145,7 +204,7 @@ class Userpanel extends Component {
       <Content style={{ background: '#fff', padding: 24, margin: 0, minHeight: 280 }}>
         { redirectFromUser ? <Redirect to="/"/> : '' }
         { loggedUser ? <LoggedPanel/> : <Login/> }
-        { showPostModal ? <AddModal/> : '' }
+        { showPostModal ? <StoredAddModal showPostModal={ showPostModal }/> : '' }
       </Content>
     </React.Fragment>
     )
@@ -186,5 +245,7 @@ const mapDispatchToProps = dispatch => ({
 })
 
 const StoredUserpanel = connect(mapStateToProps, mapDispatchToProps)(Userpanel)
+const StoredAddModal = connect(mapStateToProps, mapDispatchToProps)(AddModal)
+
 
 export default StoredUserpanel

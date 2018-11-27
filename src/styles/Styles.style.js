@@ -28,6 +28,20 @@ const StyledPagination = styled(Pagination)`
   }
 `
 
+const StyledInputLabel = styled.span `
+  color: rgba(0, 0, 0, 0.85);
+  font-size: 14px;
+  &:before{
+    display: inline-block;
+    margin-right: 4px;
+    content: "*";
+    font-family: SimSun;
+    line-height: 1;
+    font-size: 14px;
+    color: #f5222d;
+  }
+`
+
 const StyledDivider = styled(Divider)`
   &&{
     margin-top: 47px;
@@ -121,6 +135,15 @@ const StyledColPost = styled(Col)`
   }
 `
 
+const StyledInputError = styled.span `
+  color: #f5222d;
+  line-height: 1.524;
+  transition: color 0.3s cubic-bezier(0.215, 0.61, 0.355, 1);
+  margin-top: -2px;
+  clear: both;
+  display: ${ props => props.showed ? 'block' : 'none' };
+`
+
 const StyledMenuitem = styled(Menu.Item)`
   && {
     user-select: none;
@@ -154,5 +177,7 @@ export {
   StyledContent,
   StyledDivider,
   StyledAffixContainer,
-  StyledColPost
+  StyledColPost,
+  StyledInputLabel,
+  StyledInputError
 }
