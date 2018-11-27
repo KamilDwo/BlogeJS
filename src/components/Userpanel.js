@@ -92,6 +92,25 @@ class Userpanel extends Component {
           <Button key="back" onClick={ this.handleCancelAdding }>Cancel</Button>
         ] }
         style={{ top: 20 }}>
+        <Form onSubmit={ this.handleSubmit } className="add-form">
+          <FormItem
+            { ...formItemLayout }
+          label="Title">
+
+            <Input />
+            
+          </FormItem>
+          <FormItem>
+            <ReactQuill value={ this.state.postText }
+              modules={ this.modules }
+              onChange={ this.handleChange } />
+          </FormItem>
+          <FormItem>
+            <Button type="primary" htmlType="submit">
+              Submit
+            </Button>
+          </FormItem>
+        </Form>
       </Modal>)
     }
 
