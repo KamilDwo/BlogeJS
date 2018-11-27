@@ -12,6 +12,94 @@ const ButtonGroup = Button.Group
 const TabPane = Tabs.TabPane
 const FormItem = Form.Item
 
+class AddPostForm extends React.Component {
+  constructor(props) {
+    super(props)
+
+    this.state = { postText: '' }
+    this.handleChange = this.handleChange.bind(this)
+  }
+
+  handleSubmit = (e) => {
+    const { postText } = this.state
+    const { form } = this.props
+    e.preventDefault()
+
+    form.validateFields((err, values) => {
+      if (!err && postText.length > 0) {
+        axios.post('http://127.0.0.1:3002/post', {
+          postTitle: values.postTitle,
+          postContent: postText
+        })
+        .then(function (response) {
+          if(response.status === 200){
+            message.success('Successfully added new post')
+            this.props.onHidePostModal({ showPostModal: false })
+          }
+        })
+        .catch(function (error) {
+          console.log(error)
+        })
+      }
+    })
+  }
+
+  handleChange(value) {
+    this.setState({ postText: value })
+  }
+
+  modules = {
+    toolbar: [
+      ['bold', 'italic', 'underline', 'strike', 'blockquote'],
+      [{'list': 'ordered'}, {'list': 'bullet'}, {'indent': '-1'}, {'indent': '+1'}],
+      ['link', 'image'],
+      ['clean']
+    ],
+  }
+
+  render() {
+    const { getFieldDecorator } = this.props.form
+
+    const formItemLayout = {
+      labelCol: {
+        xs: { span: 24 },
+        sm: { span: 3 },
+      },
+      wrapperCol: {
+        xs: { span: 24 },
+        sm: { span: 21 },
+      },
+    }
+
+    return (
+      <Form onSubmit={ this.handleSubmit } className="add-form">
+        <FormItem
+          { ...formItemLayout }
+        label="Title">
+          { getFieldDecorator('postTitle', {
+            rules: [{
+                required: true, message: 'Please input title!',
+            }],
+          })(
+            <Input />
+          ) }
+        </FormItem>
+        <FormItem>
+          <ReactQuill value={ this.state.postText }
+            modules={ this.modules }
+            onChange={ this.handleChange } />
+        </FormItem>
+        <FormItem>
+          <Button type="primary" htmlType="submit">
+            Submit
+          </Button>
+        </FormItem>
+      </Form>
+    );
+  }
+}
+
+const WrappedAddPostForm = Form.create()(AddPostForm)
 
 class Userpanel extends Component {
   constructor() {
@@ -92,18 +180,8 @@ class Userpanel extends Component {
           <Button key="back" onClick={ this.handleCancelAdding }>Cancel</Button>
         ] }
         style={{ top: 20 }}>
+        <StoredAddPostForm/>
       </Modal>)
-    }
-
-    const formItemLayout = {
-      labelCol: {
-        xs: { span: 24 },
-        sm: { span: 3 },
-      },
-      wrapperCol: {
-        xs: { span: 24 },
-        sm: { span: 21 },
-      },
     }
 
     const LoggedPanel = () => {
@@ -113,11 +191,11 @@ class Userpanel extends Component {
           <Button onClick={ this.handleClick }>Logout</Button>
         </ButtonGroup>
         <Tabs
-          onChange={ this.onChangeTab }
-          activeKey={ this.state.activeKey }
+          onChange={this.onChangeTab}
+          activeKey={this.state.activeKey}
           animated={ false }
           style={{ marginTop: '25px' }}>
-          { this.state.panes.map(pane => <TabPane tab={pane.title} key={pane.key} closable={pane.closable}>{pane.content}</TabPane>) }
+          {this.state.panes.map(pane => <TabPane tab={pane.title} key={pane.key} closable={pane.closable}>{pane.content}</TabPane>)}
         </Tabs>
       </React.Fragment>)
     }
@@ -167,5 +245,6 @@ const mapDispatchToProps = dispatch => ({
 })
 
 const StoredUserpanel = connect(mapStateToProps, mapDispatchToProps)(Userpanel)
+const StoredAddPostForm = connect(mapStateToProps, mapDispatchToProps)(WrappedAddPostForm)
 
 export default StoredUserpanel

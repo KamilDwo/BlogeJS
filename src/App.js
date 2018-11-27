@@ -14,7 +14,6 @@ import StoredModalLoginForm from './components/LoginForm'
 import { connect } from 'react-redux'
 import { UserContext } from './context/User.context'
 import { RandomTitle, RandomInt } from './helpers/Random.helper'
-import axios from 'axios'
 
 const { Footer, Content } = Layout
 
@@ -45,12 +44,6 @@ class App extends Component {
         currentPage: currentPage
       }
     })
-  }
-
-  componentDidMount = () => {
-    axios.get('/', { port: 3002 })
-    .then((response) => { console.log(response) })
-    .catch((error) => { console.log(error) })
   }
 
   componentWillMount = () => {
