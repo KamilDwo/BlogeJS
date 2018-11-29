@@ -1,4 +1,8 @@
 language: node_js
 node_js:
-  - "stable"
+- stable
 script: npm run build
+deploy:
+  provider: heroku
+  api_key:
+    secure: cX47RvOeC/Vq1dSHkL096PSaMjkFLilS3hIYex6d5boKdYvSSNFxmOuVTy2+egfBswc5FuZPYf9eUMpMA1VkMTRWgUIWlentN7Nod//9Oj4axj2j03xNCpz98aBr0UsjBfcxV2JYgSr1mQJf2jeS2+4+uzd9fOG2/+/XO1HFFyAJCrgWnaCKUWGPaKHv4HvaXOAo+JVTNNmwvM6BKtmDeJhC5c0V5EbMD4Uui6dChkU6D2+c2lKMlFKnqq8UXjOPR6cz4z7BZ56OPlwANE3mTkmb9K0p3s+VBvHgZ8xX4fpfzRDzzBJsECig3PYLLqXiNBO3X/VdeZR0CZiYF6Ea11O6AOaGjKQyUK8RTDOWTf2Rf4xnF7k4KQh3P79eFmPpCBgalYrmSwakmOqowK9w4R+XR46sJKyJqRtjGpF2SKfGQmLukDS9aM/54pJCfGhYhSHXNDosVb5TJrZiA5mPEH+ye5YMzvwHMgP3oM/HSNVVjY7+usuRXncIucMGIgR2/jb43+s9Qsh8CBIYZEOOPI2ZyNAAhG+7ePlZ5XkOKcAKQYtRh7wP46kQgUwJQcuOspph8idQJaO05sHDedESyZhbDgXTfxTeeYpGpZOFzEN6+gxX3swgFSCSSB6rIqkucWpvNpWbs/PAMGyG4Uztl+0Ubu1u5HN+XyuyoYVxRE4=
