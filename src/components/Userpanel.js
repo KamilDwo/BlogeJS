@@ -44,7 +44,8 @@ const AddModal = Form.create()(
         if (!err && postText.length >= 10) {
           axios.post('http://127.0.0.1:3002/post', {
             postTitle: values.postTitle,
-            postContent: postText
+            postContent: postText,
+            postCreated: new Date()
           })
           .then(function (response) {
             if(response.status === 200){

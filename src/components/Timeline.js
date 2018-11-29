@@ -2,8 +2,10 @@ import React, { Component } from 'react'
 import { Card, Row, Icon } from 'antd'
 import { Link } from 'react-router-dom'
 import GetAvatar from '../helpers/avatar'
-import { StyledPagination, StyledCol } from '../styles/Styles.style'
+import { StyledPagination, StyledCol, StyledMoment } from '../styles/Styles.style'
 import { connect } from 'react-redux'
+import axios from 'axios'
+import 'moment-timezone'
 
 const { Meta } = Card
 
@@ -31,6 +33,27 @@ class Timeline extends Component {
   }
 
   getPosts = (page, component) => {
+    axios.get('http://127.0.0.1:3002/post')
+    .then(function (response) {
+      let posts = response.data
+      let postsPagination
+      let numberOfPages = Math.floor((posts.length + 21 - 0) / 21)
+      let start = (page * 21) - (21 - 0)
+      let end = Math.min(start + 21 - 0, posts.length)
+
+      postsPagination = posts.slice(start, end)
+      component.setState({
+        page: page,
+        rows: postsPagination,
+        allRows: posts.length,
+        isLoading: false,
+        pages: numberOfPages
+      })
+    })
+    .catch(function (error) {
+      console.log(error)
+    })
+    /*
     if(localStorage.getItem('posts')){
       let posts = JSON.parse(localStorage.getItem('posts')).posts
       let postsPagination
@@ -46,7 +69,7 @@ class Timeline extends Component {
         isLoading: false,
         pages: numberOfPages
       })
-    }
+    }*/
   }
 
   changePage = (page) => {
@@ -64,33 +87,35 @@ class Timeline extends Component {
 
   createTable = (rows) => {
     let rowContents = [], contents, postUrl, stringKey, stringKey2
-
+    
     contents = rows.reduce((acc, p, i) => {
-      postUrl = `/post/${ rows[i].url }`
+      postUrl = `/post/${ rows[i]._id }`
       stringKey = `r${ i }`
       stringKey2 = `r2${ i }`
-
       rowContents.push(<Link to={ postUrl } key={ i }>
         <StyledCol xl={ 8 } lg={ 12 } md={ 12 }>
           <Card>
+            <StyledMoment format="D MMM YYYY, HH:mm" withTitle tz="Europe/Warsaw">
+              { rows[i].postCreated }
+            </StyledMoment>
             <Meta
-              avatar={ <GetAvatar id={ rows[i].user }/> }
-              title={ rows[i].title }
-              description={ rows[i].intro }
+              avatar={ <GetAvatar id={ rows[i].postUser }/> }
+              title={ rows[i].postTitle }
+              description={ rows[i].postIntro }
             />
           </Card>
         </StyledCol>
       </Link>)
       if (i % 3 === 3) {
-        acc.push(<Row gutter={ 16 } key={ stringKey }>{rowContents}</Row>)
+        acc.push(<Row gutter={ 16 } key={ stringKey }>{ rowContents }</Row>)
         rowContents = []
       }
       return acc
     },[])
-    contents.push(<Row gutter={ 16 } key={ stringKey2 }>{rowContents}</Row>)
+    contents.push(<Row gutter={ 16 } key={ stringKey2 }>{ rowContents }</Row>)
 
     return (
-			<React.Fragment>{contents}</React.Fragment>
+			<React.Fragment>{ contents }</React.Fragment>
 		)
   }
 

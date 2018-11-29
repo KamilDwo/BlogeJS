@@ -1,36 +1,24 @@
 const conf = 'mongodb://blogejs:blogejs123@ds251332.mlab.com:51332/blogejs'
+const express = require('express')
+const app = express()
+const port = 3002
+const bodyParser = require('body-parser')
+const mongoose = require('mongoose')
+const cors = require('cors')
 
-let express = require('express')
-let app = express()
-let port = 3002
-let bodyParser = require('body-parser')
-let mongoose = require('mongoose')
-let cors = require('cors')
-let response
-
-let nameSchema = new mongoose.Schema({
-  postTitle: String,
-  postContent: String
-})
+const Blog = require('./models/Blog.js')
+const blogRoutes = require('./routes/blog')
 
 mongoose.Promise = global.Promise
 mongoose.connect(conf)
-
-let User = mongoose.model('User', nameSchema, 'posts')
+.then(() =>  console.log('Connection succesful'))
+.catch((err) => console.error(err))
 
 app.use(cors())
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: true }))
 
-app.post('/post', (req, res) => {
-  let myData = new User(req.body)
-
-  myData.save().then(item => {
-    res.status(200).send()
-  }).catch(err => {
-    res.status(400).send()
-  })
-})
+app.use('/post', blogRoutes)
 
 app.listen(port, () => {
   console.log('Server listening on port ' + port)

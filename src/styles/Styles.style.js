@@ -1,6 +1,7 @@
 import styled from 'styled-components'
 import { Layout, Menu, Pagination, Col, Button, Divider } from 'antd'
 import { createGlobalStyle } from 'styled-components'
+import Moment from 'react-moment'
 
 const { Sider, Content } = Layout
 
@@ -12,21 +13,18 @@ const GlobalStyle = createGlobalStyle `
   }
 `
 
-const StyledLogo = styled.div `
-  background: transparent;
-  margin: 16px 0;
-  color: #fff;
-  user-select: none;
-  text-align: center;
-  ${ props => props.collapsed ? 'margin-left: 0; font-size: 10px;' : '' };
-  transition: all 0.3s;
-`
-
 const StyledPagination = styled(Pagination)`
   &&{
     margin-top: 24px;
   }
 `
+const StyledMoment = styled(Moment)`
+  &&{
+    display: block;
+    margin-bottom: 10px;
+    margin-left: 56px;
+  }
+`;
 
 const StyledInputLabel = styled.span `
   color: rgba(0, 0, 0, 0.85);
@@ -147,6 +145,7 @@ const StyledInputError = styled.span `
 const StyledMenuitem = styled(Menu.Item)`
   && {
     user-select: none;
+    margin-top: 0;
     a {
       color: rgba(255, 255, 255, 0.65);
       text-decoration: none;
@@ -165,7 +164,6 @@ const StyledMenuitem = styled(Menu.Item)`
 `
 
 export {
-  StyledLogo,
   StyledSider,
   StyledLayout,
   StyledMenuitem,
@@ -179,5 +177,6 @@ export {
   StyledAffixContainer,
   StyledColPost,
   StyledInputLabel,
-  StyledInputError
+  StyledInputError,
+  StyledMoment
 }

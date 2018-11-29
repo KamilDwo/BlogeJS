@@ -9,7 +9,7 @@ import NotFound from './components/NotFound'
 import { BrowserRouter as Router, Route, Link, Switch, Redirect } from 'react-router-dom'
 import { Layout, Icon, BackTop } from 'antd'
 import StoredUserpanel from './components/Userpanel'
-import { StyledLogo, StyledSider, StyledLayout, StyledMenuitem, GlobalStyle, StyledMenu } from './styles/Styles.style'
+import { StyledSider, StyledLayout, StyledMenuitem, GlobalStyle, StyledMenu } from './styles/Styles.style'
 import StoredModalLoginForm from './components/LoginForm'
 import { connect } from 'react-redux'
 import { UserContext } from './context/User.context'
@@ -79,7 +79,6 @@ class App extends Component {
         <GlobalStyle/>
         <BackTop/>
         <StyledSider breakpoint="lg" collapsedWidth="50" collapsible onCollapse={ this.onCollapse }>
-          <StyledLogo collapsed={ collapsedSider ? 'collapsed' : '' }>BlogeJS</StyledLogo>
           <StyledMenu theme="dark" mode="inline" selectedKeys={[ String(currentPage) ]} collapsed={ collapsedSider ? 'collapsed' : '' }>
             <StyledMenuitem key="1">
               <Link to="/">

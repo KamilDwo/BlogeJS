@@ -7,6 +7,9 @@ import GetUser from '../helpers/User.helper'
 import { connect } from 'react-redux'
 import CountRate from '../helpers/Rates.helper'
 import StoredModalLoginForm from '../components/LoginForm'
+import axios from 'axios'
+import { Markup } from 'interweave'
+import { UrlMatcher } from 'interweave-autolink'
 
 const ButtonGroup = Button.Group
 
@@ -60,7 +63,23 @@ class Post extends Component {
   }
 
   loadPost = (id, component) => {
-    if(localStorage.getItem('posts')){
+
+    axios.get('http://127.0.0.1:3002/post/' + id)
+    .then(function (response) {
+      if(response.data){
+
+        setTimeout(function(){
+          component.setState({ exists: true, isLoading: false, postLoaded: response.data })
+        }, 500)
+      } else {
+          this.setState({ exists: false })
+      }
+    })
+    .catch(function (error) {
+        this.setState({ exists: false })
+    })
+
+    /*if(localStorage.getItem('posts')){
       let posts = JSON.parse(localStorage.getItem('posts')).posts
       let result = posts.find(obj => {
         return obj.url === id
@@ -74,7 +93,7 @@ class Post extends Component {
       } else {
         this.setState({ exists: false })
       }
-    }
+    }*/
   }
 
   handleRate = (value) => {
@@ -89,7 +108,6 @@ class Post extends Component {
   render(){
     const { exists, postLoaded, isLoading, postRate, postRates } = this.state
     let container
-    const postRows = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
     const { affixed } = this.props.affix
     const { loggedUser } = this.props.user
 
@@ -103,13 +121,9 @@ class Post extends Component {
               <Tooltip placement="left" title="Talk about this post"><Button shape="circle" icon="message" style={{ display: 'block', marginTop: '10px' }}/></Tooltip>
             </StyledAffixContainer>
           </Affix>
-          <GetUser id={ postLoaded.user } post={ postLoaded.title } intro={ postLoaded.intro }/>
+          <GetUser id={ postLoaded.postUser } post={ postLoaded.postTitle } intro={ postLoaded.postIntro }/>
           <div className="post-container">
-            { postRows.map(( number ) =>
-              <p key={ number }>
-                { postLoaded.content }
-              </p>
-            ) }
+            <Markup content={ postLoaded.postContent } matchers={ [new UrlMatcher('url')] }/>
             <StyledDivider></StyledDivider>
             <Row>
               <StyledColPost lg={ 12 } xs={ 24 }>
