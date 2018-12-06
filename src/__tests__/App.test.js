@@ -1,30 +1,31 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
-import StoredApp from '../App'
+import { App } from '../App'
 import Adapter from 'enzyme-adapter-react-16'
-import { configure, shallow } from 'enzyme'
+import { configure, shallow, mount } from 'enzyme'
 import store from '../store/store'
 import { Provider } from 'react-redux'
 import toJson from 'enzyme-to-json'
-
-const options = {
-  disableLifecycleMethods: true
-}
+import { Layout, Menu, Pagination, Col, Button, Divider } from 'antd'
+import { Link } from 'react-router-dom'
+import configureStore from 'redux-mock-store'
 
 configure({ adapter: new Adapter() })
 
-describe('<StoredApp/>', () => {
-  it('renders without crashing', () => {
-    const div = document.createElement('div')
+describe('App', () => {
+  let wrapper
+  let propsUser = {}
+  let propsPage = {}
+  let mockStore = configureStore();
 
-    ReactDOM.render(<Provider store={store}><StoredApp/></Provider>, div)
-    ReactDOM.unmountComponentAtNode(div)
+
+  beforeEach(() => {
+    wrapper = shallow(<App user={ propsUser } page={ propsPage }/>)
   })
 
-  it('matches to snapschot', () => {
-    const wrapper = shallow(<Provider store={store}><StoredApp/></Provider>, options).dive({ context: { store } }).dive().dive();
+  test('matches to snapschot', () => {
+      const component = wrapper.dive()
 
-    expect(toJson(wrapper)).toMatchSnapshot()
+      expect(toJson(component)).toMatchSnapshot()
   })
-
 })

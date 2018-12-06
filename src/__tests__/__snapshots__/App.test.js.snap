@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`<StoredApp/> matches to snapschot 1`] = `
+exports[`App adding positive numbers is not zero 1`] = `
 <Router
   history={
     Object {
@@ -36,23 +36,18 @@ exports[`<StoredApp/> matches to snapschot 1`] = `
       collapsible={true}
       onCollapse={[Function]}
     >
-      <styled.div
-        collapsed=""
-      >
-        BlogeJS
-      </styled.div>
       <Styled(Menu)
         collapsed=""
         mode="inline"
         selectedKeys={
           Array [
-            "1",
+            "undefined",
           ]
         }
         theme="dark"
       >
         <Styled(MenuItem)
-          key="1"
+          key="latest_menu"
         >
           <Link
             replace={false}
@@ -70,7 +65,7 @@ exports[`<StoredApp/> matches to snapschot 1`] = `
           </Link>
         </Styled(MenuItem)>
         <Styled(MenuItem)
-          key="2"
+          key="bloggers_menu"
         >
           <Link
             replace={false}
@@ -88,7 +83,7 @@ exports[`<StoredApp/> matches to snapschot 1`] = `
           </Link>
         </Styled(MenuItem)>
         <Styled(MenuItem)
-          key="3"
+          key="beloved_menu"
         >
           <Link
             replace={false}
@@ -106,7 +101,7 @@ exports[`<StoredApp/> matches to snapschot 1`] = `
           </Link>
         </Styled(MenuItem)>
         <Styled(MenuItem)
-          key="4"
+          key="user_men"
         >
           <div
             onClick={[Function]}
@@ -136,7 +131,184 @@ exports[`<StoredApp/> matches to snapschot 1`] = `
         <ContextProvider
           value={
             Object {
-              "loggedUser": false,
+              "loggedUser": undefined,
+            }
+          }
+        >
+          <Switch>
+            <Route
+              component={[Function]}
+              exact={true}
+              path="/"
+            />
+            <Route
+              component={[Function]}
+              path="/bloggers"
+            />
+            <Route
+              component={[Function]}
+              path="/beloved"
+            />
+            <Route
+              component={[Function]}
+              path="/user"
+            />
+            <Route
+              component={[Function]}
+              path="/post/:id"
+            />
+            <Route
+              component={[Function]}
+            />
+          </Switch>
+        </ContextProvider>
+      </Adapter>
+      <Adapter
+        style={
+          Object {
+            "textAlign": "center",
+          }
+        }
+      >
+        <Foot />
+      </Adapter>
+    </Styled(Adapter)>
+  </Adapter>
+</Router>
+`;
+
+exports[`App matches to snapschot 1`] = `
+<Router
+  history={
+    Object {
+      "action": "POP",
+      "block": [Function],
+      "createHref": [Function],
+      "go": [Function],
+      "goBack": [Function],
+      "goForward": [Function],
+      "length": 1,
+      "listen": [Function],
+      "location": Object {
+        "hash": "",
+        "pathname": "/",
+        "search": "",
+        "state": undefined,
+      },
+      "push": [Function],
+      "replace": [Function],
+    }
+  }
+>
+  <Adapter>
+    <GlobalStyleComponent
+      suppressMultiMountWarning={false}
+    />
+    <BackTop
+      visibilityHeight={400}
+    />
+    <Styled(Sider)
+      breakpoint="lg"
+      collapsedWidth="50"
+      collapsible={true}
+      onCollapse={[Function]}
+    >
+      <Styled(Menu)
+        collapsed=""
+        mode="inline"
+        selectedKeys={
+          Array [
+            "undefined",
+          ]
+        }
+        theme="dark"
+      >
+        <Styled(MenuItem)
+          key="latest_menu"
+        >
+          <Link
+            replace={false}
+            to="/"
+          >
+            <Icon
+              theme="outlined"
+              type="home"
+            />
+            <span
+              className="nav-text"
+            >
+              Latest
+            </span>
+          </Link>
+        </Styled(MenuItem)>
+        <Styled(MenuItem)
+          key="bloggers_menu"
+        >
+          <Link
+            replace={false}
+            to="/bloggers"
+          >
+            <Icon
+              theme="outlined"
+              type="team"
+            />
+            <span
+              className="nav-text"
+            >
+              Bloggers
+            </span>
+          </Link>
+        </Styled(MenuItem)>
+        <Styled(MenuItem)
+          key="beloved_menu"
+        >
+          <Link
+            replace={false}
+            to="/beloved"
+          >
+            <Icon
+              theme="outlined"
+              type="heart"
+            />
+            <span
+              className="nav-text"
+            >
+              Beloved
+            </span>
+          </Link>
+        </Styled(MenuItem)>
+        <Styled(MenuItem)
+          key="user_men"
+        >
+          <div
+            onClick={[Function]}
+          >
+            <Icon
+              type="user"
+            />
+            <span
+              className="nav-text"
+            >
+              Userpanel
+            </span>
+          </div>
+        </Styled(MenuItem)>
+      </Styled(Menu)>
+    </Styled(Sider)>
+    <Styled(Adapter)
+      collapsed=""
+    >
+      <Adapter
+        style={
+          Object {
+            "margin": "16px 16px 0",
+          }
+        }
+      >
+        <ContextProvider
+          value={
+            Object {
+              "loggedUser": undefined,
             }
           }
         >

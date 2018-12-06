@@ -4,7 +4,10 @@ let BlogSchema = new mongoose.Schema({
   postTitle: String,
   postIntro: String,
   postContent: String,
-  postCreated: Date,
+  postCreate: {
+    type: Date,
+    default: Date.now
+  },
   postUser: Number
 })
 

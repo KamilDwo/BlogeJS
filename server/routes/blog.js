@@ -1,10 +1,10 @@
 const express = require('express')
 const router = express.Router()
 const mongoose = require('mongoose')
-const Blog = require('../models/Blog.js')
+const Blog = require('../models/Blog')
 
 router.get('/', function(req, res, next) {
-  Blog.find(function (err, posts) {
+  Blog.find(function(err, posts) {
     if (err) return next(err)
     res.json(posts)
   })
@@ -12,7 +12,7 @@ router.get('/', function(req, res, next) {
 
 /* GET SINGLE BY ID */
 router.get('/:id', function(req, res, next) {
-  Blog.findById(req.params.id, function (err, post) {
+  Blog.findById(req.params.id, function(err, post) {
     if (err) return next(err)
     res.json(post)
   })
@@ -20,7 +20,7 @@ router.get('/:id', function(req, res, next) {
 
 /* SAVE */
 router.post('/', function(req, res, next) {
-  Blog.create(req.body, function (err, post) {
+  Blog.create(req.body, function(err, post) {
     if (err) return next(err)
     res.json(post)
   })
@@ -28,7 +28,7 @@ router.post('/', function(req, res, next) {
 
 /* UPDATE */
 router.put('/:id', function(req, res, next) {
-  Blog.findByIdAndUpdate(req.params.id, req.body, function (err, post) {
+  Blog.findByIdAndUpdate(req.params.id, req.body, function(err, post) {
     if (err) return next(err)
     res.json(post)
   })
@@ -36,7 +36,7 @@ router.put('/:id', function(req, res, next) {
 
 /* DELETE */
 router.delete('/:id', function(req, res, next) {
-  Blog.findByIdAndRemove(req.params.id, req.body, function (err, post) {
+  Blog.findByIdAndRemove(req.params.id, req.body, function(err, post) {
     if (err) return next(err)
     res.json(post)
   })

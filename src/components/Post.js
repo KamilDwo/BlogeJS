@@ -31,6 +31,7 @@ const RatesTooltip = (info) => {
 class Post extends Component {
   constructor(props) {
     super(props)
+
     this.state = {
       isLoading: true,
       postId: this.props.match.params.id,
@@ -63,11 +64,9 @@ class Post extends Component {
   }
 
   loadPost = (id, component) => {
-
     axios.get('http://127.0.0.1:3002/post/' + id)
     .then(function (response) {
       if(response.data){
-
         setTimeout(function(){
           component.setState({ exists: true, isLoading: false, postLoaded: response.data })
         }, 500)
@@ -78,22 +77,6 @@ class Post extends Component {
     .catch(function (error) {
         this.setState({ exists: false })
     })
-
-    /*if(localStorage.getItem('posts')){
-      let posts = JSON.parse(localStorage.getItem('posts')).posts
-      let result = posts.find(obj => {
-        return obj.url === id
-      })
-
-      if(result){
-        let component = this
-        setTimeout(function(){
-          component.setState({ exists: true, isLoading: false, postLoaded: result })
-        }, 500)
-      } else {
-        this.setState({ exists: false })
-      }
-    }*/
   }
 
   handleRate = (value) => {
@@ -107,13 +90,37 @@ class Post extends Component {
 
   render(){
     const { exists, postLoaded, isLoading, postRate, postRates } = this.state
-    let container
+    let modalContainer, postContainer, popoverContainer
     const { affixed } = this.props.affix
     const { loggedUser } = this.props.user
 
+    if(loggedUser){
+      modalContainer = <StoredModalLoginForm/>
+      popoverContainer = <Popover
+        placement="topLeft"
+        title={ <React.Fragment>Rate this post</React.Fragment> }
+        content={ <RatesTooltip rate={ postRate } rates={ postRates }/> }>
+        <div style={{ display: 'inline-block' }}>
+          <Rate character={ <Icon type="star" /> } count={ 5 } value={ postRate } onChange={ this.handleRate }/>
+        </div>
+      </Popover>
+    } else {
+      popoverContainer = <Popover
+        placement="topLeft"
+        title={ <React.Fragment>Please <span style={{ cursor: 'pointer', color: '#1890ff' }} onClick={ this.handleClick.bind(this) }>Login</span> to rate</React.Fragment> }
+        content={ <RatesTooltip rate={ postRate } rates={ postRates }/> }>
+        <div style={{ display: 'inline-block' }}>
+          <Rate character={ <Icon type="star" /> } count={ 5 } value={ postRate } disabled/>
+        </div>
+      </Popover>
+    }
+
     if (exists) {
-      container = (isLoading ? <Skeleton active paragraph={{ rows: 4 }} /> :
-        <React.Fragment>
+
+      if(isLoading){
+         postContainer = <Skeleton active paragraph={{ rows: 4 }} />
+      } else {
+        postContainer = <React.Fragment>
           <Affix offsetTop={ 24 } onChange={ affixed => this.props.onAffixChange({ affixed: affixed }) }>
             <StyledAffixContainer className={`affixed${ affixed }`} style={{ position: 'fixed', right: '17px', top: '73px' }}>
               <Tooltip placement="left" title="Love this post"><Button type="primary" shape="circle" icon="heart" style={{ display: 'block' }}/></Tooltip>
@@ -127,22 +134,7 @@ class Post extends Component {
             <StyledDivider></StyledDivider>
             <Row>
               <StyledColPost lg={ 12 } xs={ 24 }>
-                { loggedUser ?
-                  <Popover
-                    placement="topLeft"
-                    title={ <React.Fragment>Rate this post</React.Fragment> }
-                    content={ <RatesTooltip rate={ postRate } rates={ postRates }/> }>
-                    <div style={{ display: 'inline-block' }}>
-                      <Rate character={ <Icon type="star" /> } count={ 5 } value={ postRate } onChange={ this.handleRate }/>
-                    </div>
-                  </Popover> : <Popover
-                    placement="topLeft"
-                    title={ <React.Fragment>Please <span style={{ cursor: 'pointer', color: '#1890ff' }} onClick={ this.handleClick.bind(this) }>Login</span> to rate</React.Fragment> }
-                    content={ <RatesTooltip rate={ postRate } rates={ postRates }/> }>
-                    <div style={{ display: 'inline-block' }}>
-                      <Rate character={ <Icon type="star" /> } count={ 5 } value={ postRate } disabled/>
-                    </div>
-                  </Popover> }
+                { popoverContainer }
               </StyledColPost>
               <Col lg={ 12 } xs={ 24 }><ButtonGroup style={{ float: 'right' }}>
                 <Button>
@@ -155,21 +147,22 @@ class Post extends Component {
               </Col>
             </Row>
           </div>
-        </React.Fragment>)
+        </React.Fragment>
+      }
     } else {
-      container = <Redirect to="/"/>
+      postContainer = <Redirect to="/"/>
     }
 
     return (
       <React.Fragment>
-        { loggedUser ? <StoredModalLoginForm/> : "" }
+        { modalContainer }
         <Link to="/">
           <Button type="default" style={{ margin: '0 0 24px 0'}}>
             <Icon type="left" />Go back
           </Button>
         </Link>
         <StyledContent style={{ padding: 24, border: '1px solid #e8e8e8' }}>
-          { container }
+          { postContainer }
         </StyledContent>
       </React.Fragment>
     )

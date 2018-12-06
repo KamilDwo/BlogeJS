@@ -1,16 +1,8 @@
-import React, {Component} from 'react'
-import styled from 'styled-components'
+import React from 'react'
+import { StyledFooter } from '../styles/Styles.style'
 
-const StyledText = styled.span`
-  user-select: none;
-  cursor: default;
-  text-align: center;
-`
-
-class Foot extends Component {
-  render() {
-    return (<StyledText>&copy; 2018 BlogeJS</StyledText>)
-  }
-}
+const Foot = () => (
+  <StyledFooter>&copy; 2018 BlogeJS</StyledFooter>
+)
 
 export default Foot

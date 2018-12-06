@@ -6,7 +6,7 @@ import StoredPost from './components/Post'
 import StoredBloggers from './components/Bloggers'
 import StoredBeloved from './components/Beloved'
 import NotFound from './components/NotFound'
-import { BrowserRouter as Router, Route, Link, Switch, Redirect } from 'react-router-dom'
+import { BrowserRouter as Router, Route, Link, Switch } from 'react-router-dom'
 import { Layout, Icon, BackTop } from 'antd'
 import StoredUserpanel from './components/Userpanel'
 import { StyledSider, StyledLayout, StyledMenuitem, GlobalStyle, StyledMenu } from './styles/Styles.style'
@@ -17,13 +17,14 @@ import { RandomTitle, RandomInt } from './helpers/Random.helper'
 
 const { Footer, Content } = Layout
 
-class App extends Component {
-  constructor() {
-    super()
+export class App extends Component {
+  constructor(props) {
+    super(props)
 
     this.state = {
       menu: {
-        currentPage: 1
+        currentPage: 1,
+        collapsedSider: false
       }
     }
   }
@@ -61,10 +62,6 @@ class App extends Component {
     }
   }
 
-  redirectToHome = () => {
-    return <Redirect to="/"/>
-  }
-
   handleShowLoginForm = () => {
     this.props.onLoginModalOpen({ showLoginModal: true })
   }
@@ -73,48 +70,57 @@ class App extends Component {
     const { collapsedSider } = this.state.menu
     const { loggedUser, userName, showLoginModal } = this.props.user
     const { currentPage } = this.props.page
+    let userMenuItem, userLoginModal
+
+    if(loggedUser){
+      userMenuItem = <Link to="/user">
+        <Icon type="user" />
+        <span className="nav-text">{ userName }</span>
+      </Link>
+    } else {
+      userMenuItem = <div onClick={ this.handleShowLoginForm }>
+        <Icon type="user" />
+        <span className="nav-text">Userpanel</span>
+      </div>
+    }
+
+    if(showLoginModal){
+      userLoginModal = <StoredModalLoginForm/>
+    }
 
     return (<Router>
       <Layout>
         <GlobalStyle/>
         <BackTop/>
         <StyledSider breakpoint="lg" collapsedWidth="50" collapsible onCollapse={ this.onCollapse }>
-          <StyledMenu theme="dark" mode="inline" selectedKeys={[ String(currentPage) ]} collapsed={ collapsedSider ? 'collapsed' : '' }>
-            <StyledMenuitem key="1">
+          <StyledMenu theme="dark" mode="inline" selectedKeys={[ String('m'+currentPage) ]} collapsed={ collapsedSider ? 'collapsed' : '' }>
+            <StyledMenuitem key="m1">
               <Link to="/">
-                <Icon type="home" theme="outlined" />
+                <Icon type="home" theme="outlined"/>
                 <span className="nav-text">Latest</span>
               </Link>
             </StyledMenuitem>
-            <StyledMenuitem key="2">
+            <StyledMenuitem key="m2">
               <Link to="/bloggers">
-                <Icon type="team" theme="outlined" />
+                <Icon type="team" theme="outlined"/>
                 <span className="nav-text">Bloggers</span>
               </Link>
             </StyledMenuitem>
-            <StyledMenuitem key="3">
+            <StyledMenuitem key="m3">
               <Link to="/beloved">
-                <Icon type="heart" theme="outlined" />
+                <Icon type="heart" theme="outlined"/>
                 <span className="nav-text">Beloved</span>
               </Link>
             </StyledMenuitem>
-            <StyledMenuitem key="4">
-              { loggedUser ? <Link to="/user">
-                <Icon type="user" />
-                <span className="nav-text">{ userName }</span>
-              </Link> :
-              <div onClick={ this.handleShowLoginForm }>
-                <Icon type="user" />
-                <span className="nav-text">Userpanel</span>
-              </div>
-              }
+            <StyledMenuitem key="m4">
+              { userMenuItem }
             </StyledMenuitem>
           </StyledMenu>
         </StyledSider>
         <StyledLayout collapsed={ collapsedSider ? 'collapsed' : '' }>
           <Content style={{ margin: '16px 16px 0' }}>
             <UserContext.Provider value={{ loggedUser: loggedUser }}>
-              { showLoginModal ? <StoredModalLoginForm/> : '' }
+              { userLoginModal }
               <Switch>
                 <Route exact path="/" component={ StoredTimeline }/>
                 <Route path="/bloggers" component={ StoredBloggers }/>

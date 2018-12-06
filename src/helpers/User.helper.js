@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Avatar, Tooltip} from 'antd'
+import { Avatar, Tooltip } from 'antd'
 import axios from 'axios'
 
 class GetUser extends Component {
@@ -37,20 +37,21 @@ class GetUser extends Component {
 
   render() {
     const { isLoading, avatar, username } = this.state
+    let showTooltip
+
+    if(!isLoading){
+      showTooltip = <Tooltip placement="rightTop" title={ username }>
+        <Avatar src={ avatar } size={ 64 } alt="Avatar" style={{ float: 'left', marginRight: '16px' }}/>
+      </Tooltip>
+    } else {
+      showTooltip = <Tooltip placement="rightTop" title="Loading...">
+        <Avatar icon="user" size={ 64 } alt="Avatar loading..." style={{ float: 'left', marginRight: '16px' }}/>
+      </Tooltip>
+    }
 
     return (
       <React.Fragment>
-        { !isLoading ? (
-          <React.Fragment>
-            <Tooltip placement="rightTop" title={ username }>
-              <Avatar src={ avatar } size={ 64 } alt="Avatar" style={{ float: 'left', marginRight: '16px' }}/>
-            </Tooltip>
-          </React.Fragment>
-        ) : (
-          <Tooltip placement="rightTop" title="Loading...">
-            <Avatar icon="user" size={ 64 } alt="Avatar loading..." style={{ float: 'left', marginRight: '16px' }}/>
-          </Tooltip>
-        ) }
+        { showTooltip }
         <h3>{ this.props.post }</h3>
         by { username }
       </React.Fragment>

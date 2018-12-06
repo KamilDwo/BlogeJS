@@ -9,9 +9,10 @@ import 'moment-timezone'
 
 const { Meta } = Card
 
-class Timeline extends Component {
+export class Timeline extends Component {
   constructor() {
     super()
+
     this.state = {
       isLoading: true,
       rows: null,
@@ -53,23 +54,6 @@ class Timeline extends Component {
     .catch(function (error) {
       console.log(error)
     })
-    /*
-    if(localStorage.getItem('posts')){
-      let posts = JSON.parse(localStorage.getItem('posts')).posts
-      let postsPagination
-      let numberOfPages = Math.floor((posts.length + 21 - 0) / 21)
-      let start = (page * 21) - (21 - 0)
-      let end = Math.min(start + 21 - 0, posts.length)
-
-      postsPagination = posts.slice(start, end)
-      component.setState({
-        page: page,
-        rows: postsPagination,
-        allRows: posts.length,
-        isLoading: false,
-        pages: numberOfPages
-      })
-    }*/
   }
 
   changePage = (page) => {
@@ -87,7 +71,7 @@ class Timeline extends Component {
 
   createTable = (rows) => {
     let rowContents = [], contents, postUrl, stringKey, stringKey2
-    
+
     contents = rows.reduce((acc, p, i) => {
       postUrl = `/post/${ rows[i]._id }`
       stringKey = `r${ i }`
@@ -121,9 +105,14 @@ class Timeline extends Component {
 
   render() {
     const { isLoading, allRows } = this.state
+    let tableContainer
+
+    if(!isLoading){
+      tableContainer = this.createTable(this.state.rows)
+    }
 
     return (<React.Fragment>
-      { !isLoading ? this.createTable(this.state.rows) : "" }
+      { tableContainer }
       <StyledPagination
         total={ allRows }
         pageSize={ 21 }

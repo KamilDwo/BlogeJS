@@ -15,9 +15,10 @@ const FormItem = Form.Item
 
 const AddModal = Form.create()(
   class extends React.Component {
-    constructor() {
-      super()
+    constructor(props) {
+      super(props)
 
+      this.myRef = React.createRef();
       this.state = {
         postText: '',
         contentError: false
@@ -29,12 +30,15 @@ const AddModal = Form.create()(
       this.setState({ postText: value })
     }
 
-    handleSubmit = (e) => {
+    handleCancelAdding = () => {
+      this.props.onHidePostModal({ showPostModal: false })
+    }
+
+    submitForm = (e) => {
       const { postText } = this.state
       const { form, onHidePostModal } = this.props
-
-      this.setState({ contentError: false })
       e.preventDefault()
+      this.setState({ contentError: false })
 
       if(postText.length < 10){
         this.setState({ contentError: true })
@@ -45,7 +49,8 @@ const AddModal = Form.create()(
           axios.post('http://127.0.0.1:3002/post', {
             postTitle: values.postTitle,
             postContent: postText,
-            postCreated: new Date()
+            postCreated: new Date(),
+            postUser: 1
           })
           .then(function (response) {
             if(response.status === 200){
@@ -84,10 +89,13 @@ const AddModal = Form.create()(
           onCancel={ this.handleCancelAdding }
           width={ 900 }
           footer={ [
-            <Button key="back" onClick={ this.handleCancelAdding }>Cancel</Button>
+            <Button key="back" onClick={ this.handleCancelAdding }>Cancel</Button>,
+            <Button key="submit" type="primary" htmlType="submit" onClick={ this.submitForm }>
+              Submit
+            </Button>
           ] }
           style={{ top: 20 }}>
-          <Form onSubmit={ this.handleSubmit } className="add-form">
+          <Form onSubmit={ this.handleSubmit } className="add-form" ref={ this.myRef }>
             <FormItem
             label="Title">
               { getFieldDecorator('postTitle', {
@@ -104,11 +112,6 @@ const AddModal = Form.create()(
                 modules={ this.modules }
                 onChange={ this.handleChange } />
               <StyledInputError showed={ contentError }>Please input content!</StyledInputError>
-            </FormItem>
-            <FormItem>
-              <Button type="primary" htmlType="submit">
-                Submit
-              </Button>
             </FormItem>
           </Form>
         </Modal>

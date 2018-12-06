@@ -68,6 +68,12 @@ const StyledContent = styled(Content)`
   }
 `
 
+const StyledFooter = styled.div`
+  user-select: none;
+  cursor: default;
+  text-align: center;
+`
+
 const StyledAffixContainer = styled.div`
   background-color: #fff;
   box-sizing: border-box;
@@ -178,5 +184,6 @@ export {
   StyledColPost,
   StyledInputLabel,
   StyledInputError,
-  StyledMoment
+  StyledMoment,
+  StyledFooter
 }
