@@ -2,7 +2,7 @@ import React, {Component} from 'react'
 import { connect } from 'react-redux'
 
 class Beloved extends Component {
-  componentWillMount() {
+  componentDidMount() {
     this.props.onPageUpdate({ currentPage: 3 })
   }
 

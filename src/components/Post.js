@@ -47,9 +47,7 @@ class Post extends Component {
     const { id } = this.props.match.params
 
     this.loadPost(id, this)
-  }
-
-  componentWillMount(){
+    
     if(localStorage.getItem('rates')){
       const { postId } = this.state
 

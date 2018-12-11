@@ -47,7 +47,7 @@ export class App extends Component {
     })
   }
 
-  componentWillMount = () => {
+  componentDidMount = () => {
     if(!localStorage.getItem('posts')){
       let posts = [], number
       for (let i = 0; i < 139; i++) {
@@ -155,5 +155,6 @@ const mapDispatchToProps = dispatch => ({
 })
 
 const StoredApp = connect(mapStateToProps, mapDispatchToProps)(App)
+
 
 export default StoredApp

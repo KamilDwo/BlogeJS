@@ -23,10 +23,9 @@ const AddModal = Form.create()(
         postText: '',
         contentError: false
       }
-      this.handleChange = this.handleChange.bind(this)
     }
 
-    handleChange(value) {
+    handleChange = (value) => {
       this.setState({ postText: value })
     }
 
@@ -142,7 +141,7 @@ class Userpanel extends Component {
     this.setState({ activeKey })
   }
 
-  componentWillMount() {
+  componentDidMount() {
     this.props.onPageUpdate({ currentPage: 4 })
   }
 

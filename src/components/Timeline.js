@@ -23,13 +23,11 @@ export class Timeline extends Component {
     }
   }
 
-  componentWillMount() {
+  componentDidMount() {
     if(this.props.page.currentPage !== 1){
       this.props.onPageUpdate({ currentPage: 1 })
     }
-  }
 
-  componentDidMount() {
     this.getPosts(1, this)
   }
 
