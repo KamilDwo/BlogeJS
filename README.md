@@ -9,8 +9,5 @@
 * React Router
 * Styled Components
 * Axios
-* Redux-Thunk
 * Travis Ci
-* Jest
-* Enzyme
 * Express.js
