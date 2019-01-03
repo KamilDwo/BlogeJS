@@ -38,7 +38,7 @@ class GetAvatar extends Component {
         <Avatar icon="user" size={ 'large' } alt="Avatar loading..."/>
       </Tooltip>)
     } else {
-      return (  <Tooltip placement="rightTop" title={ username }>
+      return (<Tooltip placement="rightTop" title={ username }>
         <Avatar src={ avatar } size={ 'large' } alt="Avatar"/>
       </Tooltip>)
     }

@@ -114,7 +114,6 @@ class Post extends Component {
     }
 
     if (exists) {
-
       if(isLoading){
          postContainer = <Skeleton active paragraph={{ rows: 4 }} />
       } else {

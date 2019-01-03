@@ -46,7 +46,7 @@ class NormalLoginForm extends Component {
           this.props.onLogin({ loggedUser: true, userName: userName, redirect: true })
           localStorage.setItem('user', JSON.stringify({ loggedUser: true, userName: userName }))
         } else {
-          openNotificationWithIcon('error');
+          openNotificationWithIcon('error')
         }
       }
     })

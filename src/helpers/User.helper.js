@@ -3,8 +3,6 @@ import { Avatar, Tooltip } from 'antd'
 import axios from 'axios'
 
 class GetUser extends Component {
-  _isMounted = false
-
   state = {
     avatar: '',
     username: 'unknown',
@@ -15,24 +13,17 @@ class GetUser extends Component {
   getPosts() {
     axios.get(`https://rickandmortyapi.com/api/character/${ this.props.id }`)
     .then(response => {
-      if (this._isMounted) {
-        this.setState({
-          avatar: response.data.image,
-          username: response.data.name,
-          isLoading: false
-        })
-      }
+      this.setState({
+        avatar: response.data.image,
+        username: response.data.name,
+        isLoading: false
+      })
     })
     .catch(error => this.setState({ error, isLoading: false }))
   }
 
   componentDidMount() {
-    this._isMounted = true
     this.getPosts()
-  }
-
-  componentWillUnmount() {
-    this._isMounted = false
   }
 
   render() {
@@ -55,7 +46,7 @@ class GetUser extends Component {
         <h3>{ this.props.post }</h3>
         by { username }
       </React.Fragment>
-    );
+    )
   }
 }
 
