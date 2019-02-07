@@ -1,4 +1,4 @@
-import React, { Component } from 'react'
+import React from 'react'
 import { Card, Row, Icon } from 'antd'
 import { Link } from 'react-router-dom'
 import GetAvatar from '../helpers/avatar'
@@ -9,25 +9,20 @@ import 'moment-timezone'
 
 const { Meta } = Card
 
-export class Timeline extends Component {
-  constructor() {
-    super()
-
-    this.state = {
-      isLoading: true,
-      rows: null,
-      page: 1,
-      errors: null,
-      allRows: 0,
-      pages: 0
-    }
+class Timeline extends React.PureComponent {
+  state = {
+    isLoading: true,
+    rows: null,
+    page: 1,
+    errors: null,
+    allRows: 0,
+    pages: 0
   }
 
   componentDidMount() {
     if(this.props.page.currentPage !== 1){
       this.props.onPageUpdate({ currentPage: 1 })
     }
-
     this.getPosts(1, this)
   }
 
@@ -97,7 +92,7 @@ export class Timeline extends Component {
     contents.push(<Row gutter={ 16 } key={ stringKey2 }>{ rowContents }</Row>)
 
     return (
-			<React.Fragment>{ contents }</React.Fragment>
+			<>{ contents }</>
 		)
   }
 
@@ -109,7 +104,7 @@ export class Timeline extends Component {
       tableContainer = this.createTable(this.state.rows)
     }
 
-    return (<React.Fragment>
+    return (<>
       { tableContainer }
       <StyledPagination
         total={ allRows }
@@ -117,7 +112,7 @@ export class Timeline extends Component {
         current={ this.state.page }
         itemRender={ this.itemRender }
         onChange={ this.changePage }/>
-    </React.Fragment>)
+    </>)
   }
 }
 

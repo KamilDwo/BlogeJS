@@ -18,7 +18,7 @@ const AddModal = Form.create()(
     constructor(props) {
       super(props)
 
-      this.myRef = React.createRef();
+      this.formRef = React.createRef();
       this.state = {
         postText: '',
         contentError: false
@@ -94,7 +94,7 @@ const AddModal = Form.create()(
             </Button>
           ] }
           style={{ top: 20 }}>
-          <Form onSubmit={ this.handleSubmit } className="add-form" ref={ this.myRef }>
+          <Form onSubmit={ this.handleSubmit } className="add-form" ref={ this.formRef }>
             <FormItem
             label="Title">
               { getFieldDecorator('postTitle', {
@@ -188,7 +188,7 @@ class Userpanel extends Component {
     }
 
     const LoggedPanel = () => {
-      return (<React.Fragment>
+      return (<>
         <ButtonGroup>
           <Button type="primary" icon="form" onClick={ this.handleAddPost }>Add post</Button>
           <Button onClick={ this.handleClick }>Logout</Button>
@@ -200,16 +200,16 @@ class Userpanel extends Component {
           style={{ marginTop: '25px' }}>
           { this.state.panes.map(pane => <TabPane tab={pane.title} key={pane.key} closable={pane.closable}>{pane.content}</TabPane>) }
         </Tabs>
-      </React.Fragment>)
+      </>)
     }
 
-    return (<React.Fragment>
+    return (<>
       <Content style={{ background: '#fff', padding: 24, margin: 0, minHeight: 280 }}>
         { redirectFromUser ? <Redirect to="/"/> : '' }
         { loggedUser ? <LoggedPanel/> : <Login/> }
         { showPostModal ? <StoredAddModal showPostModal={ showPostModal }/> : '' }
       </Content>
-    </React.Fragment>
+    </>
     )
   }
 }

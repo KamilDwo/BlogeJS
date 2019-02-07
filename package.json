@@ -25,6 +25,7 @@
     "enzyme-to-json": "^3.3.4",
     "express": "^4.16.4",
     "express-session": "^1.15.6",
+    "flow-bin": "^0.92.1",
     "interweave": "^9.2.1",
     "interweave-autolink": "^2.0.2",
     "moment-timezone": "^0.5.23",
@@ -43,6 +44,7 @@
     "react-router-dom": "^4.3.1",
     "react-scripts": "2.0.5",
     "redux": "^4.0.1",
+    "redux-auth-wrapper": "^2.0.3",
     "redux-thunk": "^2.3.0",
     "styled-components": "^4.1.1"
   },

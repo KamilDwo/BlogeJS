@@ -1,13 +1,13 @@
-import React, { Component } from 'react'
+import React from 'react'
 import { connect } from 'react-redux'
 
-class Bloggers extends Component {
+class Bloggers extends React.Component {
   componentDidMount() {
     this.props.onPageUpdate({ currentPage: 2 })
   }
 
   render(){
-    return (<h3>bloggers</h3>)
+    return (<>bloggers</>)
   }
 }
 

@@ -1,4 +1,4 @@
-import React, { Component } from 'react'
+import React from 'react'
 import { Form, Icon, Input, notification, Modal, Button, Divider } from 'antd'
 import { StyledSubmit } from '../styles/Styles.style'
 import { connect } from 'react-redux'
@@ -26,12 +26,9 @@ const openNotificationWithIcon = (type) => {
   notification[type](texts)
 }
 
-class NormalLoginForm extends Component {
-  constructor() {
-    super()
-    this.state = {
-      visible: true
-    }
+class NormalLoginForm extends React.PureComponent {
+  state = {
+    visible: true
   }
 
   handleSubmit = (e) => {
@@ -41,7 +38,7 @@ class NormalLoginForm extends Component {
         const { userName, password } = values
 
         if(userName === 'admin' && password === 'a'){
-          this.setState({ visible: false, redirect: true })
+          this.setState({ visible: false })
           openNotificationWithIcon('success');
           this.props.onLogin({ loggedUser: true, userName: userName, redirect: true })
           localStorage.setItem('user', JSON.stringify({ loggedUser: true, userName: userName }))
@@ -56,12 +53,16 @@ class NormalLoginForm extends Component {
     this.props.onLoginModalClose({ showLoginModal: false })
   }
 
+  handleOk = () => {
+    this.props.onLoginModalClose({ showLoginModal: true })
+  }
+
   render() {
     const { getFieldDecorator } = this.props.form
     const { showLoginModal } = this.props.user
 
     return (
-      <React.Fragment>
+      <>
         <Modal
           title="Login"
           visible={ showLoginModal }
@@ -92,7 +93,7 @@ class NormalLoginForm extends Component {
             </FormItem>
           </Form>
         </Modal>
-      </React.Fragment>
+      </>
     )
   }
 }

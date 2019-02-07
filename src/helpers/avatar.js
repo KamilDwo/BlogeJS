@@ -1,20 +1,16 @@
-import React, { Component } from 'react'
+import React from 'react'
 import { Avatar, Tooltip } from 'antd'
 import axios from 'axios'
 
-class GetAvatar extends Component {
-  constructor(props) {
-    super(props)
-
-    this.state = {
-      avatar: '',
-      username: '',
-      isLoading: true,
-      errors: null
-    }
+class GetAvatar extends React.Component {
+  state = {
+    avatar: '',
+    username: '',
+    isLoading: true,
+    errors: null
   }
 
-  getPosts = () => {
+  getCharacter = () => {
     axios.get(`https://rickandmortyapi.com/api/character/${ this.props.id }`)
     .then(response => {
         this.setState({
@@ -27,7 +23,7 @@ class GetAvatar extends Component {
   }
 
   componentDidMount() {
-    this.getPosts()
+    this.getCharacter()
   }
 
   render() {

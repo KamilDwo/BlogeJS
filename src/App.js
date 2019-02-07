@@ -1,4 +1,4 @@
-import React, {Component} from 'react'
+import React from 'react'
 import 'antd/dist/antd.css'
 import StoredTimeline from './components/Timeline'
 import Foot from './components/Foot'
@@ -17,15 +17,11 @@ import { RandomTitle, RandomInt } from './helpers/Random.helper'
 
 const { Footer, Content } = Layout
 
-export class App extends Component {
-  constructor(props) {
-    super(props)
-
-    this.state = {
-      menu: {
-        currentPage: 1,
-        collapsedSider: false
-      }
+export class App extends React.Component {
+  state = {
+    menu: {
+      currentPage: 1,
+      collapsedSider: false
     }
   }
 

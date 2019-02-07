@@ -1,8 +1,8 @@
-import React, { Component } from 'react'
+import React from 'react'
 
-class NotFound extends Component {
+class NotFound extends React.Component {
   render(){
-    return (<div>Error 404</div>)
+    return (<>Error 404</>)
   }
 }
 

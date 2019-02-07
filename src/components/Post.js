@@ -25,7 +25,7 @@ const RatesTooltip = (info) => {
     ratesTest = 'rates'
   }
 
-  return (<React.Fragment>{ rate } stars from { rates } { ratesTest }</React.Fragment>)
+  return (<>{ rate } stars from { rates } { ratesTest }</>)
 }
 
 class Post extends Component {
@@ -96,7 +96,7 @@ class Post extends Component {
       modalContainer = <StoredModalLoginForm/>
       popoverContainer = <Popover
         placement="topLeft"
-        title={ <React.Fragment>Rate this post</React.Fragment> }
+        title={ <>Rate this post</> }
         content={ <RatesTooltip rate={ postRate } rates={ postRates }/> }>
         <div style={{ display: 'inline-block' }}>
           <Rate character={ <Icon type="star" /> } count={ 5 } value={ postRate } onChange={ this.handleRate }/>
@@ -105,7 +105,7 @@ class Post extends Component {
     } else {
       popoverContainer = <Popover
         placement="topLeft"
-        title={ <React.Fragment>Please <span style={{ cursor: 'pointer', color: '#1890ff' }} onClick={ this.handleClick.bind(this) }>Login</span> to rate</React.Fragment> }
+        title={ <>Please <span style={{ cursor: 'pointer', color: '#1890ff' }} onClick={ this.handleClick.bind(this) }>Login</span> to rate</> }
         content={ <RatesTooltip rate={ postRate } rates={ postRates }/> }>
         <div style={{ display: 'inline-block' }}>
           <Rate character={ <Icon type="star" /> } count={ 5 } value={ postRate } disabled/>
@@ -117,7 +117,7 @@ class Post extends Component {
       if(isLoading){
          postContainer = <Skeleton active paragraph={{ rows: 4 }} />
       } else {
-        postContainer = <React.Fragment>
+        postContainer = <>
           <Affix offsetTop={ 24 } onChange={ affixed => this.props.onAffixChange({ affixed: affixed }) }>
             <StyledAffixContainer className={`affixed${ affixed }`} style={{ position: 'fixed', right: '17px', top: '73px' }}>
               <Tooltip placement="left" title="Love this post"><Button type="primary" shape="circle" icon="heart" style={{ display: 'block' }}/></Tooltip>
@@ -144,14 +144,14 @@ class Post extends Component {
               </Col>
             </Row>
           </div>
-        </React.Fragment>
+        </>
       }
     } else {
       postContainer = <Redirect to="/"/>
     }
 
     return (
-      <React.Fragment>
+      <>
         { modalContainer }
         <Link to="/">
           <Button type="default" style={{ margin: '0 0 24px 0'}}>
@@ -161,7 +161,7 @@ class Post extends Component {
         <StyledContent style={{ padding: 24, border: '1px solid #e8e8e8' }}>
           { postContainer }
         </StyledContent>
-      </React.Fragment>
+      </>
     )
   }
 }

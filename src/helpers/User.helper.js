@@ -1,8 +1,8 @@
-import React, { Component } from 'react'
+import React from 'react'
 import { Avatar, Tooltip } from 'antd'
 import axios from 'axios'
 
-class GetUser extends Component {
+class GetUser extends React.Component {
   state = {
     avatar: '',
     username: 'unknown',
@@ -41,11 +41,11 @@ class GetUser extends Component {
     }
 
     return (
-      <React.Fragment>
+      <>
         { showTooltip }
         <h3>{ this.props.post }</h3>
         by { username }
-      </React.Fragment>
+      </>
     )
   }
 }
