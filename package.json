@@ -1,5 +1,5 @@
 {
-  "name": "BlogeJS",
+  "name": "blogejs",
   "description": "BlogeJS - social blogging platform",
   "keywords": [
     "blogejs",
@@ -24,10 +24,13 @@
     "cors": "^2.8.5",
     "enzyme-to-json": "^3.3.4",
     "express": "^4.16.4",
+    "express-jwt": "^5.3.0",
     "express-session": "^1.15.6",
     "flow-bin": "^0.92.1",
     "interweave": "^9.2.1",
     "interweave-autolink": "^2.0.2",
+    "jsonwebtoken": "^7.3.0",
+    "jwt-decode": "^2.2.0",
     "moment-timezone": "^0.5.23",
     "mongoose": "^4.6.7",
     "passport": "^0.4.0",
