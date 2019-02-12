@@ -11,5 +11,6 @@
 - Axios
 - Travis Ci
 - Express.js
+- JWT Authentication
 
 Use **test/asdf123** to login to account.
