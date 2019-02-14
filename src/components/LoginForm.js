@@ -28,9 +28,12 @@ const openNotificationWithIcon = type => {
 };
 
 class NormalLoginForm extends React.PureComponent {
-  state = {
-    visible: true
-  };
+  constructor(props) {
+    super(props);
+    this.state = {
+      visible: this.props.visible
+    };
+  }
 
   Auth = new AuthService();
 
@@ -59,24 +62,6 @@ class NormalLoginForm extends React.PureComponent {
           .catch(err => {
             openNotificationWithIcon("error");
           });
-
-        /*
-        if (userName === "admin" && password === "a") {
-          this.setState({ visible: false });
-          openNotificationWithIcon("success");
-          this.props.onLogin({
-            loggedUser: true,
-            userName: userName,
-            redirect: true
-          });
-          localStorage.setItem(
-            "user",
-            JSON.stringify({ loggedUser: true, userName: userName })
-          );
-        } else {
-          openNotificationWithIcon("error");
-        }
-        */
       }
     });
   };
@@ -92,6 +77,8 @@ class NormalLoginForm extends React.PureComponent {
   render() {
     const { getFieldDecorator } = this.props.form;
     const { showLoginModal } = this.props.user;
+
+    console.log(this.props);
 
     return (
       <>
