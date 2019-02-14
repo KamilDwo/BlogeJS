@@ -1,5 +1,4 @@
 import React from "react";
-import StoredModalLoginForm from "./LoginForm";
 import {
   Modal,
   Layout,
@@ -44,15 +43,12 @@ const userPanelPanes = [
 const UserContainer = props => {
   const {
     loggedUser,
-    showPostModal,
     redirectFromUser,
     handleAddPost,
     handleLogout,
     onChangeTab,
     activeKey,
-    userPanelPanes,
-    handlePost,
-    handleCancelAdding
+    userPanelPanes
   } = props;
   let pathname = window.location.pathname;
 

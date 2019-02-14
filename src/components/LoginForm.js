@@ -54,6 +54,7 @@ class NormalLoginForm extends React.PureComponent {
                 "user",
                 JSON.stringify({ loggedUser: true, userName: userName })
               );
+              this.props.form.resetFields();
             }
           })
           .catch(err => {
