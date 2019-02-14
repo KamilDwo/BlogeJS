@@ -28,12 +28,9 @@ const openNotificationWithIcon = type => {
 };
 
 class NormalLoginForm extends React.PureComponent {
-  constructor(props) {
-    super(props);
-    this.state = {
-      visible: this.props.visible
-    };
-  }
+  state = {
+    visible: this.props.visible
+  };
 
   Auth = new AuthService();
 
@@ -77,8 +74,6 @@ class NormalLoginForm extends React.PureComponent {
   render() {
     const { getFieldDecorator } = this.props.form;
     const { showLoginModal } = this.props.user;
-
-    console.log(this.props);
 
     return (
       <>

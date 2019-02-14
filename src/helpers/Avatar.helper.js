@@ -3,41 +3,31 @@ import { Avatar, Tooltip } from "antd";
 import axios from "axios";
 
 const TooltipContainer = props => {
-  const { isLoading, userName, userAvatar } = props;
+  const { isLoading, avatar, username } = props;
 
   if (isLoading) {
     return (
       <Tooltip placement="rightTop" title="Loading...">
-        <Avatar
-          icon="user"
-          size={64}
-          alt="Avatar loading..."
-          style={{ float: "left", marginRight: "16px" }}
-        />
+        <Avatar icon="user" size={"large"} alt="Avatar loading..." />
       </Tooltip>
     );
   }
   return (
-    <Tooltip placement="rightTop" title={userName}>
-      <Avatar
-        src={userAvatar}
-        size={64}
-        alt="Avatar"
-        style={{ float: "left", marginRight: "16px" }}
-      />
+    <Tooltip placement="rightTop" title={username}>
+      <Avatar src={avatar} size={"large"} alt="Avatar" />
     </Tooltip>
   );
 };
 
-class GetUser extends React.PureComponent {
+class GetAvatar extends React.PureComponent {
   state = {
     avatar: null,
-    username: "unknown",
+    username: null,
     isLoading: true,
     errors: null
   };
 
-  getPosts() {
+  getCharacter = () => {
     axios
       .get(`https://rickandmortyapi.com/api/character/${this.props.id}`)
       .then(response => {
@@ -51,28 +41,23 @@ class GetUser extends React.PureComponent {
       .catch(error =>
         this.setState({ ...this.state, errors: error, isLoading: false })
       );
-  }
+  };
 
   componentDidMount() {
-    this.getPosts();
+    this.getCharacter();
   }
 
   render() {
     const { isLoading, avatar, username } = this.state;
-    const { post } = this.props;
 
     return (
-      <>
-        <TooltipContainer
-          isLoading={isLoading}
-          userName={username}
-          userAvatar={avatar}
-        />
-        <h3>{post}</h3>
-        by {username}
-      </>
+      <TooltipContainer
+        isLoading={isLoading}
+        avatar={avatar}
+        username={username}
+      />
     );
   }
 }
 
-export default GetUser;
+export default GetAvatar;

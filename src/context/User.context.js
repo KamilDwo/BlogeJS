@@ -1,10 +1,10 @@
-import React from 'react'
+import React from "react";
 
 const initialState = {
   loggedUser: false,
   showLoginModal: false,
-  userName: '',
+  userName: "",
   redirect: false
-}
+};
 
-export const UserContext = React.createContext(initialState)
+export const UserContext = React.createContext(initialState);

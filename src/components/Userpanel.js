@@ -1,5 +1,5 @@
-import React, { Component } from "react";
-import WrappedNormalLoginForm from "./LoginForm";
+import React from "react";
+import StoredModalLoginForm from "./LoginForm";
 import {
   Modal,
   Layout,
@@ -9,12 +9,12 @@ import {
   Form,
   Input,
   message
-} from "antd"; // eslint-disable-line no-unused-vars
+} from "antd";
 import { connect } from "react-redux";
 import { Redirect } from "react-router-dom";
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
-import axios from "axios"; // eslint-disable-line no-unused-vars
+import axios from "axios";
 import { StyledInputLabel, StyledInputError } from "../styles/Styles.style";
 import AuthService from "./AuthService";
 
@@ -22,14 +22,77 @@ const { Content } = Layout;
 const ButtonGroup = Button.Group;
 const TabPane = Tabs.TabPane;
 const FormItem = Form.Item;
+const wyswigModules = {
+  toolbar: [
+    ["bold", "italic", "underline", "strike", "blockquote"],
+    [
+      { list: "ordered" },
+      { list: "bullet" },
+      { indent: "-1" },
+      { indent: "+1" }
+    ],
+    ["link", "image"],
+    ["clean"]
+  ]
+};
+const userPanelPanes = [
+  { title: "Tab 1", content: "Content of Tab 1", key: "1" },
+  { title: "Tab 2", content: "Content of Tab 2", key: "2" },
+  { title: "Tab 3", content: "Content of Tab 3", key: "3", closable: false }
+];
+
+const UserContainer = props => {
+  const {
+    loggedUser,
+    showPostModal,
+    redirectFromUser,
+    handleAddPost,
+    handleLogout,
+    onChangeTab,
+    activeKey,
+    userPanelPanes,
+    handlePost,
+    handleCancelAdding
+  } = props;
+  let pathname = window.location.pathname;
+
+  if (pathname === "/user" && redirectFromUser) {
+    return <Redirect to="/" />;
+  } else if (loggedUser) {
+    return (
+      <>
+        <ButtonGroup>
+          <Button type="primary" icon="form" onClick={handleAddPost}>
+            Add post
+          </Button>
+          <Button onClick={handleLogout}>Logout</Button>
+        </ButtonGroup>
+        <Tabs
+          onChange={onChangeTab}
+          activeKey={activeKey}
+          animated={false}
+          style={{ marginTop: "25px" }}
+        >
+          {userPanelPanes.map(pane => (
+            <TabPane tab={pane.title} key={pane.key} closable={pane.closable}>
+              {pane.content}
+            </TabPane>
+          ))}
+        </Tabs>
+      </>
+    );
+  } else {
+    return <Redirect to="/" />;
+  }
+};
 
 const AddModal = Form.create()(
-  class extends React.Component {
-    formRef = React.createRef();
+  class extends React.PureComponent {
     state = {
       postText: "",
       contentError: false
     };
+    formRef = React.createRef();
 
     handleChange = value => {
       this.setState({ postText: value });
@@ -42,6 +105,7 @@ const AddModal = Form.create()(
     submitForm = e => {
       const { postText } = this.state;
       const { form, onHidePostModal } = this.props;
+
       e.preventDefault();
       this.setState({ contentError: false });
 
@@ -74,29 +138,13 @@ const AddModal = Form.create()(
     render() {
       const { form, showPostModal } = this.props;
       const { getFieldDecorator } = form;
-      const { contentError } = this.state;
-
-      /* eslint-disable */
-      const modules = {
-        toolbar: [
-          ["bold", "italic", "underline", "strike", "blockquote"],
-          [
-            { list: "ordered" },
-            { list: "bullet" },
-            { indent: "-1" },
-            { indent: "+1" }
-          ],
-          ["link", "image"],
-          ["clean"]
-        ]
-      };
-      /* eslint-enable */
+      const { contentError, postText } = this.state;
 
       return (
         <Modal
           title="Add new post"
           visible={showPostModal}
-          onOk={this.handleOk}
+          onOk={this.handlePost}
           onCancel={this.handleCancelAdding}
           width={900}
           footer={[
@@ -132,8 +180,8 @@ const AddModal = Form.create()(
             <FormItem>
               <StyledInputLabel>Content:</StyledInputLabel>
               <ReactQuill
-                value={this.state.postText}
-                modules={this.modules}
+                value={postText}
+                modules={wyswigModules}
                 onChange={this.handleChange}
               />
               <StyledInputError showed={contentError}>
@@ -147,17 +195,11 @@ const AddModal = Form.create()(
   }
 );
 
-const panes = [
-  { title: "Tab 1", content: "Content of Tab 1", key: "1" },
-  { title: "Tab 2", content: "Content of Tab 2", key: "2" },
-  { title: "Tab 3", content: "Content of Tab 3", key: "3", closable: false }
-];
-
-class Userpanel extends Component {
+class Userpanel extends React.PureComponent {
   state = {
     redirectFromUser: false,
-    activeKey: panes[0].key,
-    panes
+    activeKey: userPanelPanes[0].key,
+    userPanelPanes
   };
   Auth = new AuthService();
 
@@ -169,7 +211,7 @@ class Userpanel extends Component {
     this.props.onPageUpdate({ currentPage: 4 });
   }
 
-  handleClick = () => {
+  handleLogout = () => {
     localStorage.removeItem("user");
     this.Auth.logout();
     notification.open({
@@ -188,68 +230,35 @@ class Userpanel extends Component {
     this.props.onHidePostModal({ showPostModal: false });
   };
 
+  handlePost = () => {};
+
   render() {
     const { loggedUser } = this.props.user;
-    const { redirectFromUser } = this.state;
+    const { redirectFromUser, activeKey, userPanelPanes } = this.state;
     const { showPostModal } = this.props.post;
-
-    const Login = () => {
-      let pathname = window.location.pathname;
-
-      if (pathname === "/user" && !redirectFromUser) {
-        this.setState({ redirectFromUser: true });
-      }
-
-      return (
-        <Modal
-          title="Login"
-          visible={showPostModal}
-          onOk={this.handleOk}
-          onCancel={this.handleCancel}
-          footer={null}
-        >
-          <WrappedNormalLoginForm />
-        </Modal>
-      );
-    };
-
-    const LoggedPanel = () => {
-      return (
-        <>
-          <ButtonGroup>
-            <Button type="primary" icon="form" onClick={this.handleAddPost}>
-              Add post
-            </Button>
-            <Button onClick={this.handleClick}>Logout</Button>
-          </ButtonGroup>
-          <Tabs
-            onChange={this.onChangeTab}
-            activeKey={this.state.activeKey}
-            animated={false}
-            style={{ marginTop: "25px" }}
-          >
-            {this.state.panes.map(pane => (
-              <TabPane tab={pane.title} key={pane.key} closable={pane.closable}>
-                {pane.content}
-              </TabPane>
-            ))}
-          </Tabs>
-        </>
-      );
-    };
 
     return (
       <>
         <Content
           style={{ background: "#fff", padding: 24, margin: 0, minHeight: 280 }}
         >
-          {redirectFromUser ? <Redirect to="/" /> : ""}
-          {loggedUser ? <LoggedPanel /> : <Login />}
-          {showPostModal ? (
-            <StoredAddModal showPostModal={showPostModal} />
-          ) : (
-            ""
-          )}
+          <UserContainer
+            loggedUser={loggedUser}
+            showPostModal={showPostModal}
+            redirectFromUser={redirectFromUser}
+            handleAddPost={this.handleAddPost}
+            handleLogout={this.handleLogout}
+            onChangeTab={this.onChangeTab}
+            activeKey={activeKey}
+            userPanelPanes={userPanelPanes}
+            handlePost={this.handlePost}
+            handleCancelAdding={this.handleCancelAdding}
+          />
+          <StoredAddModal
+            showPostModal={showPostModal}
+            redirectFromUser={redirectFromUser}
+            loggedUser={loggedUser}
+          />
         </Content>
       </>
     );
